@@ -378,7 +378,7 @@ const fmtDay=d=>d.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month
 const fmtTime=(d,t)=>t?d.toLocaleTimeString("en-IN",{hour:"numeric",minute:"2-digit"}):"TBA";
 
 /* ---------- images + placeholders ---------- */
-const posterUrl=(o)=>asset("posters/"+(o.poster||o.id+".jpg"));
+const posterUrl=(o)=>asset("posters/"+((o.posterByDiv&&o.posterByDiv[getDivision()])||o.poster||o.id+".jpg"));
 const posterImg=(o,cls="poster")=>`<img class="${cls}" src="${esc(posterUrl(o))}" data-ph="poster" data-label="${esc(o.name)}" alt="${esc(o.name)} poster" loading="lazy">`;
 function playerImg(gid,name,cls,photo){
   const primary=photo?asset(`players/${gid}/${photo}`):asset(`players/${gid}/${slug(name)}.jpg`);
