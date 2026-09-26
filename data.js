@@ -41,17 +41,17 @@ window.SITE = {
   ],
 
   houseSports: [
-    { id: "basketball", name: "Basketball", tagline: "4 quarters x 10 minutes",
+    { id: "basketball", name: "Basketball", poster: "basketball-ug.jpg", posterByDiv: { UG: "basketball-ug.jpg", PG: "basketball-pg.jpg" }, tagline: "4 quarters x 10 minutes",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "a" },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "cricket", name: "Cricket", tagline: "2 innings, 20 overs a side",
+    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg" }, tagline: "2 innings, 20 overs a side",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" },
         { div: "PG", round: "Final", date: "2026-09-13", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "volleyball", name: "Volleyball", tagline: "Best of 5 sets",
+    { id: "volleyball", name: "Volleyball", posterByDiv: { PG: "volleyball-pg.jpg" }, tagline: "Best of 5 sets",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-09-11", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "a" },
         { div: "PG", round: "Final", date: "2026-09-10", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
@@ -153,11 +153,11 @@ window.SITE = {
       { div: "UG", round: "Final", date: "2026-08-17", time: "06:30", venue: "Indoor courts" },
       { div: "PG", round: "Final", date: "2026-08-14", time: "06:30", venue: "Indoor courts" }
     ]},
-    { id: "shuttle-badminton", name: "Shuttle Badminton", cat: "Racket & Table", metric: "sets", results: [], schedule: [
+    { id: "shuttle-badminton", name: "Shuttle Badminton", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets", results: [], schedule: [
       { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
       { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
     ]},
-    { id: "tennis", name: "Tennis", cat: "Racket & Table", metric: "sets", results: [], schedule: [
+    { id: "tennis", name: "Tennis", poster: "tennis-ug.jpg", posterByDiv: { UG: "tennis-ug.jpg", PG: "tennis-pg.jpg" }, cat: "Racket & Table", metric: "sets", results: [], schedule: [
       { div: "UG", round: "Final", date: "2026-08-26", time: "06:30", venue: "Tennis courts" },
       { div: "PG", round: "Final", date: "2026-08-25", time: "06:30", venue: "Tennis courts" }
     ]}
