@@ -46,7 +46,7 @@ window.SITE = {
         { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "a" },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg" }, tagline: "2 innings, 20 overs a side",
+    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg", PG: "cricket-pg.jpg" }, tagline: "2 innings, 20 overs a side",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" },
         { div: "PG", round: "Final", date: "2026-09-13", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
@@ -149,11 +149,11 @@ window.SITE = {
     ]}
 ,
 
-    { id: "table-tennis", name: "Table Tennis", cat: "Racket & Table", metric: "sets", results: [], schedule: [
+    { id: "table-tennis", name: "Table Tennis", posterByDiv: { UG: "table-tennis-ug.jpg", PG: "table-tennis-pg.jpg" }, cat: "Racket & Table", metric: "sets", results: [], schedule: [
       { div: "UG", round: "Final", date: "2026-08-17", time: "06:30", venue: "Indoor courts" },
       { div: "PG", round: "Final", date: "2026-08-14", time: "06:30", venue: "Indoor courts" }
     ]},
-    { id: "shuttle-badminton", name: "Shuttle Badminton", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets", results: [], schedule: [
+    { id: "shuttle-badminton", name: "Shuttle Badminton", posterByDiv: { UG: "shuttle-badminton-ug.jpg", PG: "shuttle-badminton-pg.jpg" }, cat: "Racket & Table", metric: "sets", results: [], schedule: [
       { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
       { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
     ]},
