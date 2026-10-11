@@ -22,6 +22,9 @@ Everything ships as static files — no build step, no framework, no bundler:
 - `assets/` — `posters/<id>.jpg`, `players/<event-id>/<name-slug>.jpg` (with a shared
   `players/all/` fallback), `gallery/<id>/1.jpg, 2.jpg, ...` (numbered, probed at runtime).
   Anything missing renders a placeholder automatically — never treat a missing image as a bug.
+- `netlify/functions/publish.js` — the **Publish to site** button posts the admin's data here; it checks
+  `ADMIN_PASSWORD` server-side, then commits `data.js` to GitHub via the API (needs `GITHUB_TOKEN`), which
+  triggers a Netlify redeploy. It only works on the deployed site, not when opening `index.html` locally.
 - `netlify.toml` — `publish = "."`, security headers, `no-cache` on `data.js` so edits show up
   immediately after redeploy.
 
@@ -33,13 +36,13 @@ Everything ships as static files — no build step, no framework, no bundler:
 
 - Admin edits (via the forms, or via CSV/Excel/JSON bulk import — see below) only ever touch
   `localStorage` in the browser that made them. They do **not** touch the server.
-- To publish for everyone, the admin uses **Export data.js** on the Add results page, which
-  serializes `D` back into a `window.SITE = {...}` file, and that file replaces `data.js` in
-  the repo before redeploying.
+- To publish for everyone, the admin presses **Publish to site** on the Add results page, which sends
+  `D` to the Netlify function above and commits `data.js`. **Export data.js** still downloads the same
+  file for a manual fallback. Poster settings are always taken from `data.js`, never from the browser save.
 - This is a deliberate choice, not a missing feature: this site is maintained by meet
   volunteers who are not developers, and "edit in the browser, export, redeploy" is a
-  workflow they can run without any backend, database, or auth server. Don't "fix" this by
-  wiring up a live database unless that's explicitly what's being asked for.
+  workflow they can run without any backend, database, or auth server. Don't wire up a live
+  database unless that's explicitly what's being asked for.
 
 ## Bulk import
 

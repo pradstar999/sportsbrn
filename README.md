@@ -108,3 +108,14 @@ Put images in `assets/` using these conventions:
 - Event galleries: `assets/gallery/<event-id>/1.jpg`, `2.jpg`, `3.jpg` ...
 
 Missing images automatically show placeholders.
+
+## Publishing results site-wide
+
+On **Add results**, press **Publish to site**. It commits `data.js` to GitHub and Netlify redeploys in about a minute.
+
+One-time setup in Netlify (Site configuration > Environment variables):
+- `GITHUB_TOKEN`: a fine-grained GitHub token for `pradstar999/sportsbrn` only, with **Contents: Read and write**
+- `ADMIN_PASSWORD`: the password typed when you press Publish (checked on the server, so pick a new one; don't reuse the one in `index.html`)
+- optional `GITHUB_REPO` (default `pradstar999/sportsbrn`) and `GITHUB_BRANCH` (default `main`)
+
+Publishing only works on the deployed Netlify site.
