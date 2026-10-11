@@ -327,6 +327,11 @@ try {
   const saved = JSON.parse(localStorage.getItem("sssihl-sports-data") || "null");
   if(saved && saved.houseSports && saved.individualEvents){
     D.houseSports = saved.houseSports; D.individualEvents = saved.individualEvents;
+    // Posters always come from data.js, so a stale browser save can't hide new ones
+    for(const k of ["houseSports","individualEvents"]) for(const o of D[k]){
+      const b = BASE[k].find(x=>x.id===o.id);
+      if(b){ delete o.poster; delete o.posterByDiv; if(b.poster) o.poster=b.poster; if(b.posterByDiv) o.posterByDiv=b.posterByDiv; }
+    }
   }
 } catch(e) { console.warn("Saved results could not be loaded", e); }
 const $ = (s,r=document)=>r.querySelector(s);
