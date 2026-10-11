@@ -91,7 +91,14 @@ img.poster,img.pl{object-fit:cover;display:block}
 
 /* detail */
 .dhead{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:32px;align-items:start;margin-bottom:8px}
-.dhead .poster{width:100%;aspect-ratio:3/4;border-radius:18px;border:1px solid var(--line)}
+.dhead .poster{width:100%;height:auto;object-fit:contain;border-radius:18px;border:1px solid var(--line)}
+.dhead .poster.ph{aspect-ratio:3/4}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.pair .poster{min-width:0}
+.dhead.haspair{grid-template-columns:minmax(260px,600px) 1fr}
+.sc .pair{position:absolute;inset:0;gap:2px;height:100%}
+.sc .pair .poster{position:static;height:100%}
+.sc img.poster.land{object-fit:contain;background:var(--ink2)}
 .meta{color:var(--dim);margin-bottom:14px}
 .score{display:flex;gap:18px;align-items:center;margin:16px 0}
 .score div{font:900 72px/1 var(--display);color:var(--c)}
@@ -100,7 +107,7 @@ img.poster,img.pl{object-fit:cover;display:block}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{padding:9px 16px;border-radius:99px;border:1px solid var(--line);font-weight:600;font-size:14px;text-decoration:none;display:inline-block}
 .btn:hover{border-color:#fff}.btn.solid{background:var(--hot);color:var(--ink);border-color:var(--hot)}
-@media(max-width:700px){.dhead{grid-template-columns:1fr}.dhead .poster{max-width:260px}}
+@media(max-width:700px){.dhead,.dhead.haspair{grid-template-columns:1fr}.dhead .poster{max-width:260px}.dhead .pair{max-width:none}.dhead .pair .poster{max-width:none}}
 
 .fx{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:rgba(255,255,255,.04);max-width:640px}
 .fx.live{border-color:var(--pink)}
@@ -378,8 +385,13 @@ const fmtDay=d=>d.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month
 const fmtTime=(d,t)=>t?d.toLocaleTimeString("en-IN",{hour:"numeric",minute:"2-digit"}):"TBA";
 
 /* ---------- images + placeholders ---------- */
-const posterUrl=(o)=>asset("posters/"+((o.posterByDiv&&o.posterByDiv[getDivision()])||o.poster||o.id+".jpg"));
-const posterImg=(o,cls="poster")=>`<img class="${cls}" src="${esc(posterUrl(o))}" data-ph="poster" data-label="${esc(o.name)}" alt="${esc(o.name)} poster" loading="lazy">`;
+const posterFiles=(o)=>{const v=(o.posterByDiv&&o.posterByDiv[getDivision()])||o.poster||o.id+".jpg";return Array.isArray(v)?v:[v]};
+const posterUrl=(o)=>asset("posters/"+posterFiles(o)[0]);
+const posterOne=(o,f,cls,alt)=>`<img class="${cls}" src="${esc(asset("posters/"+f))}" data-ph="poster" data-label="${esc(o.name)}" alt="${esc(alt)}" loading="lazy">`;
+const posterImg=(o,cls="poster")=>{const fs=posterFiles(o);
+  if(fs.length>1)return `<div class="pair">${fs.map((f,i)=>posterOne(o,f,cls,o.name+" poster "+(i+1))).join("")}</div>`;
+  return posterOne(o,fs[0],cls,o.name+" poster")};
+document.addEventListener("load",e=>{const el=e.target;if(el instanceof HTMLImageElement&&el.dataset.ph==="poster"&&el.naturalWidth>el.naturalHeight)el.classList.add("land")},true);
 function playerImg(gid,name,cls,photo){
   const primary=photo?asset(`players/${gid}/${photo}`):asset(`players/${gid}/${slug(name)}.jpg`);
   return `<img class="${cls}" src="${esc(primary)}" data-fb="${esc(asset("players/all/"+slug(name)+".jpg"))}" data-ph="player" data-label="${esc(name)}" alt="${esc(name)}" loading="lazy">`;
@@ -745,7 +757,7 @@ function houseList(div){return `<div class="page"><h1>House events — ${div}</h
 function sportPage(sp,div){
   const wn=sportWinner(sp,div);
   return `<div class="page"><a class="crumb" href="#/house">&larr; House events</a>
-  <div class="dhead">${posterImg(sp)}<div><h1>${esc(sp.name)}</h1><p class="meta">${esc(divName(div))} championship${sp.tagline?" · "+esc(sp.tagline):""}</p>${wn?`<span class="win" style="--c:${wn.color}">${esc(wn.name)} won the ${div} title</span>`:""}
+  <div class="dhead${posterFiles(sp).length>1?" haspair":""}">${posterImg(sp)}<div><h1>${esc(sp.name)}</h1><p class="meta">${esc(divName(div))} championship${sp.tagline?" · "+esc(sp.tagline):""}</p>${wn?`<span class="win" style="--c:${wn.color}">${esc(wn.name)} won the ${div} title</span>`:""}
   ${scoreboard(sp,div)}${shareBtns(sp.name+" · "+div+" · SSSIHL Brindavan Sports")}</div></div>
   <h2 class="h2">Fixtures and results</h2><div id="fxwrap">${fxBlock(sp,div)}</div>
   <h2 class="h2">Squads</h2><div class="squads">${D.houses.map(h=>{const pl=sp.players.filter(p=>p.house===h.id&&(p.div===div||!p.div));

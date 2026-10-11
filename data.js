@@ -4,6 +4,7 @@
 
    IMAGE NAMING (all inside the assets/ folder):
      Poster for a sport/event ....... assets/posters/<id>.jpg           e.g. posters/basketball.jpg, posters/800m.jpg
+                                      Two posters (e.g. one per house): posterByDiv:{UG:["a.jpg","b.jpg"]} shows them side by side
      Player / athlete photo ......... assets/players/<id>/<name-slug>.jpg   e.g. players/basketball/rahul-sharma.jpg
                                       (slug = lowercase name, spaces -> dashes)
                                       Optional shared photo: assets/players/all/<name-slug>.jpg
@@ -46,7 +47,7 @@ window.SITE = {
         { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "a" },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg" }, tagline: "2 innings, 20 overs a side",
+    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg", PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharatha.jpg"] }, tagline: "2 innings, 20 overs a side",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" },
         { div: "PG", round: "Final", date: "2026-09-13", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
@@ -56,11 +57,11 @@ window.SITE = {
         { div: "UG", round: "Final", date: "2026-09-11", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "a" },
         { div: "PG", round: "Final", date: "2026-09-10", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "football", name: "Football", tagline: "30 + 10 + 30 minutes",
+    { id: "football", name: "Football", posterByDiv: { UG: ["football-ug-arjuna.jpg", "football-ug-bharatha.jpg"] }, tagline: "30 + 10 + 30 minutes",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-09-15", time: "16:30", venue: "Main ground", a: "bh", b: "ar", sa: "1", sb: "1", status: "final", winner: "a", note: "Full time 1-1. Bharatha won 2-1 on penalties." }
       ], players: [] },
-    { id: "ball-badminton", name: "Ball Badminton", tagline: "Best of 3 sets",
+    { id: "ball-badminton", name: "Ball Badminton", posterByDiv: { UG: "ball-badminton-ug.jpg" }, tagline: "Best of 3 sets",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-09-17", time: "16:30", venue: "Ball badminton court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] }
