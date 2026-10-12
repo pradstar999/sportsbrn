@@ -155,12 +155,12 @@ window.SITE = {
       { div: "PG", round: "Final", date: "2026-08-14", time: "06:30", venue: "Indoor courts" }
     ]},
     { id: "shuttle-badminton", name: "Shuttle Badminton (Singles)", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets", results: [
-      { div: "UG", name: "Aman Sahu", mark: "Final: 21–15, 21–17, 24–22", round: "1st place" },
+      { div: "UG", name: "Aman Sahu", mark: "Final: 21–15, 17–21, 24–22", round: "1st place" },
       { div: "UG", name: "G Hemanth", mark: "Final: 15–21, 21–17, 22–24", round: "2nd place" },
-      { div: "UG", name: "Subhash", mark: "Bronze: 21–18, 16–21, 21–16 vs Shikar", round: "3rd place" },
+      { div: "UG", name: "Subhash", mark: "Bronze: 21–18, 17–21, 21–16 vs Shikar", round: "3rd place" },
       { div: "PG", name: "Aditya Gurung", mark: "Final: 21–16, 21–11", round: "1st place" },
       { div: "PG", name: "Sai Ram R", mark: "Final: 16–21, 11–21", round: "2nd place" },
-      { div: "PG", name: "Sravan", mark: "Bronze: 21–19, 16–21, 21–16 vs Arjun", round: "3rd place" }
+      { div: "PG", name: "Sravan", mark: "Bronze: 21–19, 18–21, 21–16 vs Arjun", round: "3rd place" }
     ], schedule: [
       { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
       { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
