@@ -24,6 +24,8 @@
    OPTIONAL ON A FIXTURE: per-set / per-quarter scores and scorers (a = Bharatha, b = Arjuna):
      periods:{label:"Quarter", rows:[[9,4],[4,4],[6,4],[10,3]]}      (label "Quarter" or "Set"; each row = [Bharatha, Arjuna])
      scorers:{bh:[{name:"Name", pts:4}], ar:[{name:"Name", pts:11}]}
+     result:"Short result line"   (shown under the scoreboard; if sa and sb are empty the big score shows "vs")
+     periods label can also be "Innings" (cricket: one column per innings, put each score in the batting side's cell)
    OPTIONAL ON AN INDIVIDUAL EVENT (racket sports): set-by-set match results
      matches:[ {div:"UG", round:"Singles Final", a:"Player A", b:"Player B", sets:[[21,15],[17,21],[24,22]], winner:"a"} ]
        (each set = [A's points, B's points]).  Podium places use results:[{place, name, mark:"Winner", round:"Singles", div}]
@@ -60,7 +62,9 @@ window.SITE = {
       ], players: [] },
     { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg", PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharatha.jpg"] }, tagline: "2 innings, 20 overs a side",
       fixtures: [
-        { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" },
+        { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b",
+          result: "Arjuna won, chasing a target of 94.",
+          periods: { label: "Innings", rows: [["124/9 (20 ov)", "–"], ["–", "138/8 (20 ov)"], ["106 all out (15.2 ov)", "–"], ["–", "Won chasing 94"]] } },
         { div: "PG", round: "Final", date: "2026-09-13", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
     { id: "volleyball", name: "Volleyball", posterByDiv: { PG: "volleyball-pg.jpg" }, tagline: "Best of 5 sets",

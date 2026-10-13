@@ -290,6 +290,7 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 .fxnote{margin-top:10px;font-size:13px;color:var(--dim);font-style:italic;text-align:center}
 .fx .fxnote{text-align:left}
 .detail{margin-top:18px}
+.sbresult{margin-top:12px;text-align:center;font-weight:700;font-size:17px}
 .ptable{width:100%;border-collapse:collapse;font-size:15px}
 .ptable th,.ptable td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--line)}
 .ptable th:first-child,.ptable td:first-child{text-align:left;font-weight:600;white-space:nowrap}
@@ -494,7 +495,7 @@ function fxCard(f){
   const side=(h,sc,w)=>`<div class="side ${f.winner===w?"win":""}"><span class="sw" style="--c:${h.color}"></span><span class="t">${esc(h.name)}</span><span class="s">${esc(sc)||(eff==="over"?"?":"-")}</span>${f.winner===w?'<span class="tag">Won</span>':""}</div>`;
   const d=slotDate(f);
   const meta=[d?fmtDay(d)+(f.time?" · "+fmtTime(d,f.time):""):"",f.venue,f.round].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join("");
-  return `<div class="fx ${eff}"><div class="m">${eff==="live"?'<span class="badge">Live</span>':""}${eff==="over"?'<span class="badge overbadge">OVER</span>':""}${meta}</div>${side(H(f.a),f.sa,"a")}${side(H(f.b),f.sb,"b")}${f.note?`<div class="fxnote">${esc(f.note)}</div>`:""}</div>`;
+  return `<div class="fx ${eff}"><div class="m">${eff==="live"?'<span class="badge">Live</span>':""}${eff==="over"?'<span class="badge overbadge">OVER</span>':""}${meta}</div>${side(H(f.a),f.sa,"a")}${side(H(f.b),f.sb,"b")}${f.result?`<div class="fxnote">${esc(f.result)}</div>`:""}${f.note?`<div class="fxnote">${esc(f.note)}</div>`:""}</div>`;
 }
 function fxBlock(sp,div){
   const fx=fixturesFor(sp,div);
@@ -513,10 +514,11 @@ function scoreboard(sp,div){
   return `<div class="scoreboard">
     <div class="sbrow">
       <div class="sbside ${f.winner==='a'?'win':''}"><span class="sw" style="--c:${H(f.a).color}"></span>${esc(H(f.a).name)}</div>
-      <div class="sbscore">${f.sa!==""?esc(f.sa):"–"}<span class="sbdash">:</span>${f.sb!==""?esc(f.sb):"–"}</div>
+      <div class="sbscore">${f.result&&f.sa===""&&f.sb===""?"vs":`${f.sa!==""?esc(f.sa):"–"}<span class="sbdash">:</span>${f.sb!==""?esc(f.sb):"–"}`}</div>
       <div class="sbside r ${f.winner==='b'?'win':''}">${esc(H(f.b).name)}<span class="sw" style="--c:${H(f.b).color}"></span></div>
     </div>
     <div class="sbmeta">${eff==="live"?'<span class="badge">Live</span>':eff==="over"?'<span class="badge overbadge">OVER · result pending</span>':eff==="upcoming"?'<span class="soon">Upcoming</span>':`<span class="tag">${esc(f.round)}</span>`} ${esc(meta)}</div>
+    ${f.result?`<div class="sbresult">${esc(f.result)}</div>`:""}
     ${f.note?`<div class="fxnote">${esc(f.note)}</div>`:""}
     ${matchDetail(f)}
   </div>`;
@@ -528,7 +530,7 @@ function matchDetail(f){
   if(P&&P.rows&&P.rows.length){
     const q=P.label==="Quarter",rows=P.rows;
     const line=(i,w)=>`<tr class="${f.winner===w?"w":""}"><td><span class="sw" style="--c:${hs[i].color}"></span> ${esc(hs[i].name)}</td>${rows.map(r=>`<td>${esc(r[i])}</td>`).join("")}${q?`<td class="tot">${esc(i?f.sb:f.sa)}</td>`:""}</tr>`;
-    out+=`<div class="detail tw"><table class="ptable"><thead><tr><th></th>${rows.map((_,k)=>`<th>${q?"Q":"Set "}${k+1}</th>`).join("")}${q?"<th>Final</th>":""}</tr></thead><tbody>${line(0,"a")}${line(1,"b")}</tbody></table></div>`;
+    out+=`<div class="detail tw"><table class="ptable"><thead><tr><th></th>${rows.map((_,k)=>`<th>${q?"Q":esc(P.label||"Set")+" "}${k+1}</th>`).join("")}${q?"<th>Final</th>":""}</tr></thead><tbody>${line(0,"a")}${line(1,"b")}</tbody></table></div>`;
   }
   const S=f.scorers||{};
   const col=id=>{const l=S[id]||[];if(!l.length)return "";const h=H(id);return `<div class="scol"><h4><span class="sw" style="--c:${h.color}"></span>${esc(h.name)} scorers</h4>${l.map(x=>`<div class="srow"><span>${esc(x.name)}</span><b>${esc(x.pts)}</b></div>`).join("")}</div>`};
