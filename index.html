@@ -289,6 +289,23 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 .sbmeta{text-align:center;color:var(--dim);font-size:13px;margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .fxnote{margin-top:10px;font-size:13px;color:var(--dim);font-style:italic;text-align:center}
 .fx .fxnote{text-align:left}
+.detail{margin-top:18px}
+.ptable{width:100%;border-collapse:collapse;font-size:15px}
+.ptable th,.ptable td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--line)}
+.ptable th:first-child,.ptable td:first-child{text-align:left;font-weight:600;white-space:nowrap}
+.ptable th{color:var(--dim);font-weight:600;font-size:13px}
+.ptable tr.w td{color:#fff}.ptable td.tot{font-weight:800}
+.scorers{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.scol h4{font:800 22px var(--display);margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.srow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:15px}
+.srow b{font-weight:800}
+.matches{display:grid;gap:12px}
+.mt{display:grid;grid-template-columns:1fr auto 1fr;gap:10px 18px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--ink2)}
+.mt .mr{grid-column:1/-1;font:800 20px var(--display);color:var(--hot)}
+.mt .mp{font-weight:600;color:var(--dim)}.mt .mp.r{text-align:right}.mt .mp.wn{color:#fff;font-weight:800}
+.msets{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.msets span{padding:4px 11px;border-radius:99px;border:1px solid var(--line2);font-weight:700;font-size:14px}
+@media(max-width:600px){.scorers{grid-template-columns:1fr}.mt{grid-template-columns:1fr}.mt .mp.r{text-align:left}.msets{justify-content:flex-start}}
 @media(max-width:520px){.sbrow{flex-direction:column;gap:10px}.sbside.r{flex-direction:row}}
 </style>
 </head>
@@ -323,8 +340,17 @@ const adminLogin = () => sessionStorage.setItem("sssihl-admin-auth","1");
 const adminLogout = () => { sessionStorage.removeItem("sssihl-admin-auth"); location.hash="#/"; route(); };
 const clone = o => JSON.parse(JSON.stringify(o));
 const D = clone(BASE);
+const sigOf = o => {let h=5381;const t=JSON.stringify([o.houseSports,o.individualEvents]);for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return h};
+const BASESIG = sigOf(BASE);
 try {
-  const saved = JSON.parse(localStorage.getItem("sssihl-sports-data") || "null");
+  const raw = localStorage.getItem("sssihl-sports-data");
+  let saved = JSON.parse(raw || "null");
+  if(saved && saved.baseSig !== BASESIG){
+    // data.js changed since this browser saved its copy: the site's data wins.
+    // Keep the old copy under another key instead of deleting it.
+    try{localStorage.setItem("sssihl-sports-data-set-aside",raw);localStorage.removeItem("sssihl-sports-data")}catch(e){}
+    window.__staleSaved = true; saved = null;
+  }
   if(saved && saved.houseSports && saved.individualEvents){
     D.houseSports = saved.houseSports; D.individualEvents = saved.individualEvents;
     // Posters always come from data.js, so a stale browser save can't hide new ones
@@ -492,7 +518,25 @@ function scoreboard(sp,div){
     </div>
     <div class="sbmeta">${eff==="live"?'<span class="badge">Live</span>':eff==="over"?'<span class="badge overbadge">OVER · result pending</span>':eff==="upcoming"?'<span class="soon">Upcoming</span>':`<span class="tag">${esc(f.round)}</span>`} ${esc(meta)}</div>
     ${f.note?`<div class="fxnote">${esc(f.note)}</div>`:""}
+    ${matchDetail(f)}
   </div>`;
+}
+/* optional per-set / per-quarter scores and scorers on a fixture (see data.js header) */
+function matchDetail(f){
+  const hs=[H(f.a),H(f.b)];let out="";
+  const P=f.periods;
+  if(P&&P.rows&&P.rows.length){
+    const q=P.label==="Quarter",rows=P.rows;
+    const line=(i,w)=>`<tr class="${f.winner===w?"w":""}"><td><span class="sw" style="--c:${hs[i].color}"></span> ${esc(hs[i].name)}</td>${rows.map(r=>`<td>${esc(r[i])}</td>`).join("")}${q?`<td class="tot">${esc(i?f.sb:f.sa)}</td>`:""}</tr>`;
+    out+=`<div class="detail tw"><table class="ptable"><thead><tr><th></th>${rows.map((_,k)=>`<th>${q?"Q":"Set "}${k+1}</th>`).join("")}${q?"<th>Final</th>":""}</tr></thead><tbody>${line(0,"a")}${line(1,"b")}</tbody></table></div>`;
+  }
+  const S=f.scorers||{};
+  const col=id=>{const l=S[id]||[];if(!l.length)return "";const h=H(id);return `<div class="scol"><h4><span class="sw" style="--c:${h.color}"></span>${esc(h.name)} scorers</h4>${l.map(x=>`<div class="srow"><span>${esc(x.name)}</span><b>${esc(x.pts)}</b></div>`).join("")}</div>`};
+  if((S[f.a]||[]).length||(S[f.b]||[]).length)out+=`<div class="scorers">${col(f.a)}${col(f.b)}</div>`;
+  return out;
+}
+function matchCard(m){
+  return `<div class="mt"><div class="mr">${esc(m.round)}</div><div class="mp ${m.winner==="a"?"wn":""}">${esc(m.a)}</div><div class="msets">${(m.sets||[]).map(x=>`<span>${esc(x[0])}–${esc(x[1])}</span>`).join("")}</div><div class="mp r ${m.winner==="b"?"wn":""}">${esc(m.b)}</div></div>`;
 }
 function shareBtns(title){
   return `<div class="actions"><a class="btn solid" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(title+" "+location.href)}">Share on WhatsApp</a><button class="btn" data-copy>Copy link</button></div>`;
@@ -510,15 +554,15 @@ function eventDateLabel(ev,div){
 }
 function markLabel(ev){return ev.metric==="time"?"Timing":ev.metric==="distance"?"Distance":ev.metric==="height"?"Height":"Result"}
 function podiumImg(ev,r){return playerImg(ev.id,r.name,"podpic",r.photo)}
-function podiumBlock(ev,r){
+function podiumBlock(ev,r,title="Podium"){
   const top=r.slice(0,3);
-  return `<h2 class="h2">Podium</h2><div class="podium">${[0,1,2].map(i=>{const x=top[i];return x?`<div class="pod"><div class="place">${i+1}</div>${podiumImg(ev,x)}<div class="pn">${esc(x.name)}</div><div class="pm">${[x.className,x.regNo].filter(Boolean).map(esc).join(" · ")}</div><div class="pr">${esc(x.mark||"")}${unit(ev)}</div></div>`:`<div class="pod"><div class="place">${i+1}</div><div class="podpic ph"><span>${i+1}</span></div><div class="pn muted">Result pending</div></div>`}).join("")}</div>`;
+  return `<h2 class="h2">${esc(title)}</h2><div class="podium">${[0,1,2].map(i=>{const x=top[i];return x?`<div class="pod"><div class="place">${i+1}</div>${podiumImg(ev,x)}<div class="pn">${esc(x.name)}</div><div class="pm">${[x.className,x.regNo].filter(Boolean).map(esc).join(" · ")}</div><div class="pr">${esc(x.mark||"")}${unit(ev)}</div></div>`:`<div class="pod"><div class="place">${i+1}</div><div class="podpic ph"><span>${i+1}</span></div><div class="pn muted">Result pending</div></div>`}).join("")}</div>`;
 }
 function resultCards(ev,r){
   if(!r.length)return `<div class="empty">Results will appear here after the event.</div>`;
   return `<div class="resultcards">${r.map((x,i)=>`<div class="resultcard"><div>${playerImg(ev.id,x.name,"av",x.photo)}</div><div><div class="place">${i+1}. ${esc(x.name)}</div><div class="details">${[x.className,x.regNo,x.round].filter(Boolean).map(esc).join(" · ")}</div></div><div class="mark">${esc(x.mark||"")}${unit(ev)}<small>${esc(markLabel(ev))}</small></div></div>`).join("")}</div>`;
 }
-function saveData(){localStorage.setItem("sssihl-sports-data",JSON.stringify({houseSports:D.houseSports,individualEvents:D.individualEvents}));toast("Saved in this browser");}
+function saveData(){localStorage.setItem("sssihl-sports-data",JSON.stringify({baseSig:BASESIG,houseSports:D.houseSports,individualEvents:D.individualEvents}));toast("Saved in this browser");}
 function resetSaved(){localStorage.removeItem("sssihl-sports-data");location.reload()}
 function siteSnapshot(){return {...clone(BASE),houseSports:D.houseSports,individualEvents:D.individualEvents}}
 function downloadData(){
@@ -601,8 +645,9 @@ function importIndividualRow(row){
   if(!name||!mark)return {ok:false,reason:"missing name or result"};
   const place=row.place?+row.place:null;
   const div=(row.div||"UG").toUpperCase();
-  ev.results=ev.results.filter(x=>!(place!=null&&x.place===place&&x.div===div));
-  ev.results.push({place,name,className:row.class||row.classname||"",regNo:row.regno||row["registration number"]||"",mark,div,round:row.round||"Final",photo:row.photo||""});
+  const round=row.round||"Final";
+  ev.results=ev.results.filter(x=>!(place!=null&&x.place===place&&x.div===div&&(x.round||"Final")===round));
+  ev.results.push({place,name,className:row.class||row.classname||"",regNo:row.regno||row["registration number"]||"",mark,div,round,photo:row.photo||""});
   return {ok:true};
 }
 function importHouseRow(row){
@@ -790,17 +835,22 @@ function indList(div){
   <div class="evgrid" id="evgrid">${indGrid(div)}</div></div>`;
 }
 const indGrid=(div)=>D.individualEvents.filter(e=>ui.cat==="All"||e.cat===ui.cat).map(e=>evCard(e,div)).join("");
+function resultsBlock(ev,r){
+  const rounds=[...new Set(r.map(x=>x.round||"Final"))];
+  if(ev.metric==="sets"&&rounds.length>1)return rounds.map(rd=>{const rr=r.filter(x=>(x.round||"Final")===rd);return podiumBlock(ev,rr,rd)+resultCards(ev,rr)}).join("");
+  return `${podiumBlock(ev,r)}<h2 class="h2">Results</h2>${resultCards(ev,r)}`;
+}
 function eventPage(ev,div){
   const r=ranked(ev,div);
-  const rec=ev.record||(r[0]?{mark:r[0].mark,name:r[0].name,year:"this meet"}:null);
+  const rec=ev.record||(r[0]&&ev.metric!=="sets"?{mark:r[0].mark,name:r[0].name,year:"this meet"}:null);
   const sched=ev.schedule.filter(s=>s.div===div).slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const status=sched.length?(sched.every(isPast)?"over":"upcoming"):"unscheduled";
   return `<div class="page"><a class="crumb" href="#/individual">&larr; Individual events</a>
   <div class="dhead">${posterImg(ev)}<div><h1>${esc(ev.name)}</h1><div class="event-date">${esc(eventDateLabel(ev,div))} · ${esc(div)}</div><p class="meta">${esc(ev.cat)}${ev.metric==="time"?" · fastest time wins":ev.metric==="height"?" · highest clearance wins":ev.metric==="distance"?" · longest distance wins":""}</p>
   ${status==="over"?'<span class="rec over">OVER</span>':status==="live"?'<span class="rec">LIVE</span>':""}
   ${rec?`<span class="rec">${ev.record?"Record":"Best mark"}: ${esc(rec.mark)}${unit(ev)} · ${esc(rec.name)}${rec.year?" ("+esc(rec.year)+")":""}</span>`:""}${shareBtns(ev.name+" · "+div+" · SSSIHL Brindavan Sports")}</div></div>
-  ${podiumBlock(ev,r)}
-  <h2 class="h2">Results</h2>${resultCards(ev,r)}
+  ${resultsBlock(ev,r)}
+  ${(ev.matches||[]).some(m=>m.div===div)?`<h2 class="h2">Match results</h2><div class="matches">${ev.matches.filter(m=>m.div===div).map(matchCard).join("")}</div>`:""}
   <h2 class="h2">Schedule</h2>${sched.length?`<div class="tw"><table><thead><tr><th>Round</th><th>Date</th><th>Time</th><th>Venue</th><th>Status</th></tr></thead><tbody>${sched.map(s=>{const d=slotDate(s),past=isPast(s);return `<tr><td>${esc(s.round)}</td><td>${d?esc(fmtDay(d)):"TBA"}</td><td>${d?esc(fmtTime(d,s.time)):"TBA"}</td><td>${esc(s.venue||"TBA")}</td><td>${past?'<span class="badge overbadge">OVER</span>':'<span class="badge upcoming">Upcoming</span>'}</td></tr>`}).join("")}</tbody></table></div>`:`<div class="empty">No scheduled event for ${esc(div)}.</div>`}
   ${galleryBlock(ev)}</div>`;
 }
@@ -946,6 +996,7 @@ addEventListener("keydown",e=>{
   if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();openSearch()}
 });
 $("#foot").textContent=`${D.campus} · Sports Corner · Updated ${D.updated}`;
+if(window.__staleSaved)setTimeout(()=>toast("Site results were updated. Older unpublished changes in this browser were set aside."),800);
 document.addEventListener("change",e=>{if(e.target.id==="import-file"&&e.target.files[0])importFile(e.target.files[0])});
 document.addEventListener("click",e=>{if(e.target.closest("#dropzone"))$("#import-file")?.click()});
 document.addEventListener("dragover",e=>{if(e.target.closest("#dropzone")){e.preventDefault();$("#dropzone").classList.add("drag")}});

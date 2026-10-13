@@ -21,6 +21,12 @@
    ADD A RESULT (inside an individual event):
      results:[ {div:"UG", name:"Full Name", house:"ar", mark:"2:04.80", round:"Final"} ]
        time events: "11.45" or "2:04.80"   distance/height events: metres like "5.82"
+   OPTIONAL ON A FIXTURE: per-set / per-quarter scores and scorers (a = Bharatha, b = Arjuna):
+     periods:{label:"Quarter", rows:[[9,4],[4,4],[6,4],[10,3]]}      (label "Quarter" or "Set"; each row = [Bharatha, Arjuna])
+     scorers:{bh:[{name:"Name", pts:4}], ar:[{name:"Name", pts:11}]}
+   OPTIONAL ON AN INDIVIDUAL EVENT (racket sports): set-by-set match results
+     matches:[ {div:"UG", round:"Singles Final", a:"Player A", b:"Player B", sets:[[21,15],[17,21],[24,22]], winner:"a"} ]
+       (each set = [A's points, B's points]).  Podium places use results:[{place, name, mark:"Winner", round:"Singles", div}]
    ADD A FIXTURE (inside a house sport):
      fixtures:[ {div:"UG", round:"League", date:"2026-10-02", time:"16:30", venue:"Main court",
                  a:"bh", b:"ar", sa:"42", sb:"37", status:"final", winner:"a"} ]
@@ -44,7 +50,12 @@ window.SITE = {
   houseSports: [
     { id: "basketball", name: "Basketball", poster: "basketball-ug.jpg", posterByDiv: { UG: "basketball-ug.jpg", PG: "basketball-pg.jpg" }, tagline: "4 quarters x 10 minutes",
       fixtures: [
-        { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "15", sb: "29", status: "final", winner: "b", note: "Quarter scores (Bharatha–Arjuna): Q1 4–9; Q2 8–13; Q3 12–19; Q4 15–29. Bharatha scorers: Rushi (2×2); Prathamesh (2×6, 2×3); Kishan (2×1); Arjunas own basket (2). Arjuna scorers: Piyush Yadav (2×4, 1×3); Subhash (2×2)." },
+        { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "29", sb: "15", status: "final", winner: "a",
+          periods: { label: "Quarter", rows: [[9, 4], [4, 4], [6, 4], [10, 3]] },
+          scorers: {
+            bh: [{ name: "Prathamesh", pts: 18 }, { name: "Rushi", pts: 4 }, { name: "Kishan", pts: 2 }, { name: "Own basket (by Arjunas)", pts: 2 }],
+            ar: [{ name: "Piyush Yadav", pts: 11 }, { name: "Subhash", pts: 4 }]
+          } },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
     { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg", PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharatha.jpg"] }, tagline: "2 innings, 20 overs a side",
@@ -54,7 +65,8 @@ window.SITE = {
       ], players: [] },
     { id: "volleyball", name: "Volleyball", posterByDiv: { PG: "volleyball-pg.jpg" }, tagline: "Best of 5 sets",
       fixtures: [
-        { div: "UG", round: "Final", date: "2026-09-11", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "4", sb: "1", status: "final", winner: "a", note: "Reported winner: Bharatha 4–1. Set scores supplied: 21–16; 22–20; 21–18 (Arjuna); 21–12. Only four set scores were provided for a reported 4–1 result." },
+        { div: "UG", round: "Final", date: "2026-09-11", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "4", sb: "1", status: "final", winner: "a",
+          periods: { label: "Set", rows: [[21, 16], [22, 20], [18, 21], [21, 12]] } },
         { div: "PG", round: "Final", date: "2026-09-10", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
     { id: "football", name: "Football", posterByDiv: { UG: ["football-ug-arjuna.jpg", "football-ug-bharatha.jpg"] }, tagline: "30 + 10 + 30 minutes",
@@ -63,7 +75,8 @@ window.SITE = {
       ], players: [] },
     { id: "ball-badminton", name: "Ball Badminton", posterByDiv: { UG: "ball-badminton-ug.jpg" }, tagline: "Best of 3 sets",
       fixtures: [
-        { div: "UG", round: "Final", date: "2026-09-17", time: "16:30", venue: "Ball badminton court", a: "bh", b: "ar", sa: "0", sb: "2", status: "final", winner: "b", note: "Arjuna won. Set scores: 21–18; 22–6." }
+        { div: "UG", round: "Final", date: "2026-09-17", time: "16:30", venue: "Ball badminton court", a: "bh", b: "ar", sa: "0", sb: "2", status: "final", winner: "b",
+          periods: { label: "Set", rows: [[18, 21], [6, 22]] } }
       ], players: [] }
   ],
 
@@ -154,23 +167,37 @@ window.SITE = {
       { div: "UG", round: "Final", date: "2026-08-17", time: "06:30", venue: "Indoor courts" },
       { div: "PG", round: "Final", date: "2026-08-14", time: "06:30", venue: "Indoor courts" }
     ]},
-    { id: "shuttle-badminton", name: "Shuttle Badminton (Singles)", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets", results: [
-      { div: "UG", place: 1, name: "Aman Sahu", mark: "Final: 21–15, 17–21, 24–22", round: "1st place" },
-      { div: "UG", place: 2, name: "G Hemanth", mark: "Final: 15–21, 21–17, 22–24", round: "2nd place" },
-      { div: "UG", place: 3, name: "Subhash", mark: "Bronze: 21–18, 17–21, 21–16 vs Shikar", round: "3rd place" },
-      { div: "PG", place: 1, name: "Aditya Gurung", mark: "Final: 21–16, 21–11", round: "1st place" },
-      { div: "PG", place: 2, name: "Sai Ram R", mark: "Final: 16–21, 11–21", round: "2nd place" },
-      { div: "PG", place: 3, name: "Sravan", mark: "Bronze: 21–19, 18–21, 21–16 vs Arjun", round: "3rd place" }
-    ], schedule: [
-      { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
-      { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
-    ]},
-    { id: "shuttle-badminton-doubles", name: "Shuttle Badminton (Doubles)", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets", results: [
-      { div: "UG", place: 1, name: "Pranav & Gnaneswar", mark: "Final: 21–15, 21–11", round: "1st place" },
-      { div: "UG", place: 2, name: "Subhash & Maheshwar", mark: "Final: 15–21, 11–21", round: "2nd place" }
-    ], schedule: [
-      { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" }
-    ]},
+    { id: "shuttle-badminton", name: "Shuttle Badminton (Singles)", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets",
+      results: [
+        { div: "UG", round: "Singles", place: 1, name: "Aman Sahu", mark: "Winner" },
+        { div: "UG", round: "Singles", place: 2, name: "G Hemanth", mark: "Runner-up" },
+        { div: "UG", round: "Singles", place: 3, name: "Subhash", mark: "Third" },
+        { div: "PG", round: "Singles", place: 1, name: "Aditya Gurung", className: "2nd MBA", mark: "Winner" },
+        { div: "PG", round: "Singles", place: 2, name: "Sai Ram R", className: "2nd MA", mark: "Runner-up" },
+        { div: "PG", round: "Singles", place: 3, name: "Sravan Sai", className: "2nd MBA", mark: "Third" }
+      ],
+      matches: [
+        { div: "UG", round: "Singles Final", a: "Aman Sahu", b: "G Hemanth", sets: [[21, 15], [17, 21], [24, 22]], winner: "a" },
+        { div: "UG", round: "Bronze Match", a: "Subhash", b: "Shikar", sets: [[21, 18], [17, 21], [21, 16]], winner: "a" },
+        { div: "PG", round: "Singles Final", a: "Aditya Gurung", b: "Sai Ram R", sets: [[21, 16], [21, 11]], winner: "a" },
+        { div: "PG", round: "Bronze Match", a: "Sravan Sai", b: "Arjun", sets: [[21, 19], [18, 21], [21, 16]], winner: "a" }
+      ],
+      schedule: [
+        { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
+        { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
+      ]},
+    { id: "shuttle-badminton-doubles", name: "Shuttle Badminton (Doubles)", poster: "shuttle-badminton.jpg", cat: "Racket & Table", metric: "sets",
+      results: [
+        { div: "UG", round: "Doubles", place: 1, name: "Pranav & Gnaneswar", mark: "Winner" },
+        { div: "UG", round: "Doubles", place: 2, name: "Subhash & Maheshwar", mark: "Runner-up" }
+      ],
+      matches: [
+        { div: "UG", round: "Doubles Final", a: "Pranav & Gnaneswar", b: "Subhash & Maheshwar", sets: [[21, 15], [21, 11]], winner: "a" }
+      ],
+      schedule: [
+        { div: "UG", round: "Final", date: "2026-08-19", time: "06:30", venue: "Badminton courts" },
+        { div: "PG", round: "Final", date: "2026-08-18", time: "06:30", venue: "Badminton courts" }
+      ]},
     { id: "tennis", name: "Tennis", poster: "tennis-ug.jpg", posterByDiv: { UG: "tennis-ug.jpg", PG: "tennis-pg.jpg" }, cat: "Racket & Table", metric: "sets", results: [], schedule: [
       { div: "UG", round: "Final", date: "2026-08-26", time: "06:30", venue: "Tennis courts" },
       { div: "PG", round: "Final", date: "2026-08-25", time: "06:30", venue: "Tennis courts" }

@@ -44,6 +44,14 @@ Everything ships as static files — no build step, no framework, no bundler:
   workflow they can run without any backend, database, or auth server. Don't wire up a live
   database unless that's explicitly what's being asked for.
 
+## Scores beyond the final tally
+
+`data.js` fixtures can carry `periods` (per-quarter or per-set scores) and `scorers`; racket events can carry
+`matches` (set-by-set results). They render inside the scoreboard (`matchDetail()`) and on the event page
+(`matchCard()`); the header comment in `data.js` shows the shapes. Browser-saved admin data carries a
+`baseSig` of `data.js`; if `data.js` has changed, the old browser copy is set aside (not deleted) so new
+content is never hidden by a stale save.
+
 ## Bulk import
 
 The Add results → **Bulk import results** panel accepts `.csv`, `.xlsx`/`.xls`, or `.json`:
