@@ -53,10 +53,10 @@ window.SITE = {
     { id: "basketball", name: "Basketball", poster: "basketball-ug.jpg", posterByDiv: { UG: "basketball-ug.jpg", PG: "basketball-pg.jpg" }, tagline: "4 quarters x 10 minutes",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-28", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "29", sb: "15", status: "final", winner: "a",
-          periods: { label: "Quarter", rows: [[9, 4], [4, 4], [6, 4], [10, 3]] },
+          periods: { label: "Quarter", rows: [[4, 9], [8, 13], [12, 19], [15, 29]] },
           scorers: {
-            bh: [{ name: "Prathamesh", pts: 18 }, { name: "Rushi", pts: 4 }, { name: "Kishan", pts: 2 }, { name: "Own basket (by Arjunas)", pts: 2 }],
-            ar: [{ name: "Piyush Yadav", pts: 11 }, { name: "Subhash", pts: 4 }]
+            bh: [{ name: "Rushi", pts: "2×2" }, { name: "Prathamesh", pts: "2×6, 2×3" }, { name: "Kishan", pts: "2×1" }, { name: "Own basket (by Arjunas)", pts: 2 }],
+            ar: [{ name: "Piyush Yadav", pts: "2×4, 1×3" }, { name: "Subhash", pts: "2×2" }]
           } },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
