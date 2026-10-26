@@ -38,7 +38,7 @@ window.SITE = {
   name: "Brindavan Sports Corner",
   campus: "Sri Sathya Sai Institute of Higher Learning, Brindavan Campus",
   meet: "Annual Sports Meet 2026-27",
-  updated: "2026-09-22",
+  updated: "2026-10-26",
   assetBase: "assets/",
   galleryMax: 60,
   divisions: ["UG", "PG"],
@@ -70,7 +70,7 @@ window.SITE = {
     { id: "volleyball", name: "Volleyball", posterByDiv: { PG: "volleyball-pg.jpg" }, tagline: "Best of 5 sets",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-09-11", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "4", sb: "1", status: "final", winner: "a",
-          periods: { label: "Set", rows: [[21, 16], [22, 20], [18, 21], [21, 12]] } },
+          periods: { label: "Set", rows: [[21, 16], [22, 20], [18, 21], [21, 12]] }, result: "Bharathas won 4–1." },
         { div: "PG", round: "Final", date: "2026-09-10", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
     { id: "football", name: "Football", posterByDiv: { UG: ["football-ug-arjuna.jpg", "football-ug-bharatha.jpg"] }, tagline: "30 + 10 + 30 minutes",
@@ -208,3 +208,14 @@ window.SITE = {
     ]}
   ]
 };
+
+  /* PG podium results imported from the supplied PG results sheet. */
+  const pgPodiums = {"100m":[["Iraianbu",1,"12.41","1st MBA"],["Sneho",2,"13.03","2nd MA"],["Vignesh",3,"13.25","1st MBA"]],"200m":[["Iraianbu",1,"27.97","1st MBA"],["Sneho",2,"29.28","2nd MA"],["Satwik",3,"28.63","2nd MBA"]],"400m":[["Iraianbu",1,"1:00.88","1st MBA"],["Surya Vamshi",2,"1:05.75","1st MBA"],["Sneho Sakey",3,"1:08.00","2nd MA"]],"800m":[["Abhay K. Shah",1,"2:23.54","2nd MBA"],["Deen Dayal",2,"2:34.50","2nd MA"],["A. Prem",3,"2:36.95","2nd MBA"]],"1500m":[["Abhay Shah",1,"4:56.63","2nd MBA"],["Anshuman Gurung",2,"5:16.63","2nd MBA"],["Rishab",3,"5:17.38","2nd MBA"]],"5000m":[["Abhay Shah",1,"19:42","2nd MBA"],["Rishab",2,"20:58","2nd MBA"],["Anshuman",3,"21:22","2nd MBA"]],"hammer-throw":[["Ankush",1,"14.28","2nd MBA"],["Naga Ketan",2,"14.14","2nd MBA"],["Abhishek",3,"13.20","1st MBA"]],"javelin-throw":[["Ganesh",1,"35.82","2nd MBA"],["Abhay",2,"34.22","2nd MBA"],["Jaswanth",3,"31.57","2nd MA"]],"discus-throw":[["Rajesh Thammi",1,"22.51","2nd MBA"],["Muing Limbu",2,"18.47","2nd MA"],["Gourav Das",3,"17.91","2nd MBA"]],"shot-put":[["Arjun",1,"8.49","2nd MA"],["Rajesh Thami",2,"7.91","2nd MBA"],["Satwik Bhat",3,"7.60","2nd MBA"]],"triple-jump":[["Iraianbu",1,"11.41","1st MBA"],["A. Prem",2,"10.18","2nd MBA"],["Satwik Bhat",3,"9.83","2nd MBA"]],"long-jump":[["Satwik",1,"5.50","2nd MA"],["Charan Raju",2,"4.96","1st MBA"],["Santosh",3,"4.81","1st MBA"]],"high-jump":[["Irainanbu",1,"1.48","1st MBA"],["B Santhosh",2,"1.46","1st MBA"],["A Prem Sai",3,"1.41","2nd MBA"]],"4x100m-relay":[["Bharatas (Vignesh, Pavan, Jaswanth P.S, Sneho Sarkey)",1,"56.79","Team"],["Arjunas (Dhanvi, B Santhosh, Rajesh Thami, Deen Dayal)",2,"59.25","Team"],["Bharatas (Fayaz Ali, Kushu Vardhan, Sumukh, Mano Sai)",3,"59.94","Team"]],"4x400m-relay":[["Arjunas (Surya Vamshi, Ayush, Abhay, Iraianbu)",1,"4:39.43","Team"],["Arjunas (Mahendra, Siddarth, Abhinaya, Sravan Sai)",2,"4:53.51","Team"],["Bharatas (Ganesh, Siddharth, Aditya Gurung, Rishab)",3,"5:02.00","Team"]],"tennis":[["Aditya Thakur",1,"Winner","1st MBA"],["Naga Ketan",2,"Runner-up","2nd MBA"],["Pavan B S",3,"Third","1st MBA"]]};
+  for (const ev of window.SITE.individualEvents) {
+    const rows = pgPodiums[ev.id];
+    if (!rows) continue;
+    ev.results = (ev.results || []).filter(r => r.div !== "PG" || r.round !== "Final");
+    for (const [name, place, mark, className] of rows) {
+      ev.results.push({div:"PG", round:"Final", place, name, mark, className});
+    }
+  }
