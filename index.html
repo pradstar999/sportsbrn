@@ -511,10 +511,11 @@ function scoreboard(sp,div){
   const eff=fxEffStatus(f);
   const d=slotDate(f);
   const meta=[d?fmtDay(d)+(f.time?" · "+fmtTime(d,f.time):""):"",f.venue].filter(Boolean).join(" · ");
+  const multiInningsCricket = sp.id === "cricket" && div === "UG";
   return `<div class="scoreboard">
     <div class="sbrow">
       <div class="sbside ${f.winner==='a'?'win':''}"><span class="sw" style="--c:${H(f.a).color}"></span>${esc(H(f.a).name)}</div>
-      <div class="sbscore">${f.result&&f.sa===""&&f.sb===""?"vs":`${f.sa!==""?esc(f.sa):"–"}<span class="sbdash">:</span>${f.sb!==""?esc(f.sb):"–"}`}</div>
+      <div class="sbscore">${multiInningsCricket ? "Arjunas won" : f.result&&f.sa===""&&f.sb===""?"vs":`${f.sa!==""?esc(f.sa):"–"}<span class="sbdash">:</span>${f.sb!==""?esc(f.sb):"–"}`}</div>
       <div class="sbside r ${f.winner==='b'?'win':''}">${esc(H(f.b).name)}<span class="sw" style="--c:${H(f.b).color}"></span></div>
     </div>
     <div class="sbmeta">${eff==="live"?'<span class="badge">Live</span>':eff==="over"?'<span class="badge overbadge">OVER · result pending</span>':eff==="upcoming"?'<span class="soon">Upcoming</span>':`<span class="tag">${esc(f.round)}</span>`} ${esc(meta)}</div>
