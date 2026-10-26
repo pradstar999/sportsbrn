@@ -484,7 +484,7 @@ function evCard(ev,div){
   const sched=ev.schedule.filter(s=>s.div===div);
   const allOver=sched.length>0&&sched.every(isPast);
   const next=sched.filter(s=>!isPast(s)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))[0];
-  return `<a class="ev" style="--cc:${catColor(ev.cat)}" href="#/individual/${ev.id}">${posterImg(ev,"poster th")}<div class="b"><h3>${esc(ev.name)}</h3><div class="k">${esc(ev.cat)}${ev.metric!=="match"&&ev.metric!=="sets"?" · "+(ev.metric==="time"?"fastest wins":ev.metric==="height"?"highest wins":"furthest wins"):""}</div>
+  return `<a class="ev" style="--cc:${catColor(ev.cat)}" href="#/individual/${ev.id}"><div class="b"><h3>${esc(ev.name)}</h3><div class="k">${esc(ev.cat)}${ev.metric!=="match"&&ev.metric!=="sets"?" · "+(ev.metric==="time"?"fastest wins":ev.metric==="height"?"highest wins":"furthest wins"):""}</div>
   ${r?`<div class="r"><span>${esc(r.name)}</span><b>${esc(r.mark)}${unit(ev)}</b></div>`:allOver?`<div class="r"><span>Event over</span><b>Results pending</b></div>`:next?`<div class="r"><span>Next</span><b>${esc(next.round)} · ${esc(next.date)}</b></div>`:`<div class="none">Schedule to be announced</div>`}</div></a>`}
 function houseBoard(div){
   const t=calc(div);
@@ -840,8 +840,8 @@ function indList(div){
 const indGrid=(div)=>D.individualEvents.filter(e=>ui.cat==="All"||e.cat===ui.cat).map(e=>evCard(e,div)).join("");
 function resultsBlock(ev,r){
   const rounds=[...new Set(r.map(x=>x.round||"Final"))];
-  if(ev.metric==="sets"&&rounds.length>1)return rounds.map(rd=>{const rr=r.filter(x=>(x.round||"Final")===rd);return podiumBlock(ev,rr,rd)+resultCards(ev,rr)}).join("");
-  return `${podiumBlock(ev,r)}<h2 class="h2">Results</h2>${resultCards(ev,r)}`;
+  if(ev.metric==="sets"&&rounds.length>1)return rounds.map(rd=>{const rr=r.filter(x=>(x.round||"Final")===rd);return podiumBlock(ev,rr,rd)}).join("");
+  return podiumBlock(ev,r);
 }
 function eventPage(ev,div){
   const r=ranked(ev,div);
@@ -849,7 +849,7 @@ function eventPage(ev,div){
   const sched=ev.schedule.filter(s=>s.div===div).slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const status=sched.length?(sched.every(isPast)?"over":"upcoming"):"unscheduled";
   return `<div class="page"><a class="crumb" href="#/individual">&larr; Individual events</a>
-  <div class="dhead">${posterImg(ev)}<div><h1>${esc(ev.name)}</h1><div class="event-date">${esc(eventDateLabel(ev,div))} · ${esc(div)}</div><p class="meta">${esc(ev.cat)}${ev.metric==="time"?" · fastest time wins":ev.metric==="height"?" · highest clearance wins":ev.metric==="distance"?" · longest distance wins":""}</p>
+  <div class="dhead" style="grid-template-columns:1fr"><div><h1>${esc(ev.name)}</h1><div class="event-date">${esc(eventDateLabel(ev,div))} · ${esc(div)}</div><p class="meta">${esc(ev.cat)}${ev.metric==="time"?" · fastest time wins":ev.metric==="height"?" · highest clearance wins":ev.metric==="distance"?" · longest distance wins":""}</p>
   ${status==="over"?'<span class="rec over">OVER</span>':status==="live"?'<span class="rec">LIVE</span>':""}
   ${rec?`<span class="rec">${ev.record?"Record":"Best mark"}: ${esc(rec.mark)}${unit(ev)} · ${esc(rec.name)}${rec.year?" ("+esc(rec.year)+")":""}</span>`:""}${shareBtns(ev.name+" · "+div+" · SSSIHL Brindavan Sports")}</div></div>
   ${resultsBlock(ev,r)}
