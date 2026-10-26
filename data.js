@@ -89,7 +89,7 @@ window.SITE = {
   /* cat: Track | Jumps | Throws | Other      metric: time | distance | height
      record (optional): {mark:"11.20", name:"Name", house:"bh", year:"2024"} */
   individualEvents: [
-    { id: "100m", name: "100m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "100m", name: "100m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"12.34"},{"div":"UG","round":"Final","place":2,"name":"Ojas Jagtap","mark":"12.50"},{"div":"UG","round":"Final","place":3,"name":"Amon Sahu","mark":"12.53"}], schedule: [
       { div: "UG", round: "Heats", date: "2026-10-01", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Semi Finals", date: "2026-10-02", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Final", date: "2026-10-03", time: "06:30", venue: "Athletic track" },
@@ -97,7 +97,7 @@ window.SITE = {
       { div: "PG", round: "Semi Finals", date: "2026-10-02", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-10-03", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "200m", name: "200m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "200m", name: "200m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deepdas","mark":"27.28"},{"div":"UG","round":"Final","place":2,"name":"Sivaramakrishnan","mark":"27.28"},{"div":"UG","round":"Final","place":3,"name":"Kishan","mark":"27.60"}], schedule: [
       { div: "UG", round: "Heats", date: "2026-09-25", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Semi Finals", date: "2026-09-26", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Final", date: "2026-09-28", time: "06:30", venue: "Athletic track" },
@@ -105,7 +105,7 @@ window.SITE = {
       { div: "PG", round: "Semi Finals", date: "2026-09-26", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-28", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "400m", name: "400m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "400m", name: "400m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"1:01.94"},{"div":"UG","round":"Final","place":2,"name":"Shivaramakrishnana","mark":"1:02.66"},{"div":"UG","round":"Final","place":3,"name":"Amar Aditya","mark":"1:06.28"}], schedule: [
       { div: "UG", round: "Heats", date: "2026-09-21", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Semi Finals", date: "2026-09-22", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Final", date: "2026-09-23", time: "06:30", venue: "Athletic track" },
@@ -113,47 +113,47 @@ window.SITE = {
       { div: "PG", round: "Semi Finals", date: "2026-09-22", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-23", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "800m", name: "800m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "800m", name: "800m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Shoyam Chettri","mark":"2:12.46"},{"div":"UG","round":"Final","place":2,"name":"Nikhil Thapa","mark":"2:17.91"},{"div":"UG","round":"Final","place":3,"name":"Anmol Chetri","mark":"2:21.73"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-19", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-19", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "1500m", name: "1500m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "1500m", name: "1500m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Shoyam Chetri","mark":"4:36.41"},{"div":"UG","round":"Final","place":2,"name":"Nikhil Thapa","mark":"4:46.53"},{"div":"UG","round":"Final","place":3,"name":"Abhinav Gurung","mark":"4:51.15"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-18", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-18", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "5000m", name: "5000m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "5000m", name: "5000m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Shoyam Chettri","mark":"19:25"},{"div":"UG","round":"Final","place":2,"name":"Madhusudan","mark":"20:26"},{"div":"UG","round":"Final","place":3,"name":"Anmol Chettri","mark":"20:31"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-27", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-27", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "10000m", name: "10000m", cat: "Track", metric: "time", results: [], schedule: [
+    { id: "10000m", name: "10000m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Shoyam Chettri","mark":"34:16"},{"div":"UG","round":"Final","place":2,"name":"Anmol Chettri","mark":"34:21"},{"div":"UG","round":"Final","place":3,"name":"Nikhil Thapa","mark":"34:52"}], schedule: [
       { div: "UG", round: "Final", date: "2026-10-04", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-10-04", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "long-jump", name: "Long Jump", cat: "Jumps", metric: "distance", results: [], schedule: [
+    { id: "long-jump", name: "Long Jump", cat: "Jumps", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"5.72"},{"div":"UG","round":"Final","place":2,"name":"Sivaramakrishnan R","mark":"5.72"},{"div":"UG","round":"Final","place":3,"name":"Shoyam Chettri","mark":"5.18"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-24", time: "16:30", venue: "Jumps pit" },
       { div: "PG", round: "Final", date: "2026-09-24", time: "06:30", venue: "Jumps pit" }
     ]},
-    { id: "high-jump", name: "High Jump", cat: "Jumps", metric: "height", results: [], schedule: [
+    { id: "high-jump", name: "High Jump", cat: "Jumps", metric: "height", results: [{"div":"UG","round":"Final","place":1,"name":"Mohit","mark":"1.50"},{"div":"UG","round":"Final","place":2,"name":"Anand Sai","mark":"1.49"},{"div":"UG","round":"Final","place":3,"name":"Deep Das","mark":"1.49"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-29", time: "16:30", venue: "Jumps pit" },
       { div: "PG", round: "Final", date: "2026-09-29", time: "06:30", venue: "Jumps pit" }
     ]},
-    { id: "triple-jump", name: "Triple Jump", cat: "Jumps", metric: "distance", results: [], schedule: [
+    { id: "triple-jump", name: "Triple Jump", cat: "Jumps", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"Siva Rama Krishnan","mark":"11.44"},{"div":"UG","round":"Final","place":2,"name":"Kasinath M","mark":"10.81"},{"div":"UG","round":"Final","place":3,"name":"Aditya Sai","mark":"10.68"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-22", time: "16:30", venue: "Jumps pit" },
       { div: "PG", round: "Final", date: "2026-09-22", time: "06:45", venue: "Jumps pit" }
     ]},
-    { id: "discus-throw", name: "Discus Throw", cat: "Throws", metric: "distance", results: [], schedule: [
+    { id: "discus-throw", name: "Discus Throw", cat: "Throws", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"G Tushar","mark":"24.73"},{"div":"UG","round":"Final","place":2,"name":"Subhash Reddy P","mark":"24.11"},{"div":"UG","round":"Final","place":3,"name":"B Piyush Yadav","mark":"23.94"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-19", time: "16:30", venue: "Throws field" },
       { div: "PG", round: "Final", date: "2026-09-19", time: "06:45", venue: "Throws field" }
     ]},
-    { id: "javelin-throw", name: "Javelin Throw", cat: "Throws", metric: "distance", results: [], schedule: [
+    { id: "javelin-throw", name: "Javelin Throw", cat: "Throws", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"Lakshya Bhandari","mark":"39.31"},{"div":"UG","round":"Final","place":2,"name":"Jashwant Roy","mark":"38.84"},{"div":"UG","round":"Final","place":3,"name":"Dewanth Naidu","mark":"33.85"}], schedule: [
       { div: "UG", round: "Final", date: "2026-10-03", time: "16:30", venue: "Throws field" },
       { div: "PG", round: "Final", date: "2026-10-03", time: "06:45", venue: "Throws field" }
     ]},
-    { id: "shot-put", name: "Shot Put", cat: "Throws", metric: "distance", results: [], schedule: [
+    { id: "shot-put", name: "Shot Put", cat: "Throws", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"Subhash Reddy P","mark":"8.59"},{"div":"UG","round":"Final","place":2,"name":"Sai Kishan","mark":"8.57"},{"div":"UG","round":"Final","place":3,"name":"B Piyush Yadav","mark":"8.28"}], schedule: [
       { div: "UG", round: "Final", date: "2026-09-23", time: "16:30", venue: "Throws field" },
       { div: "PG", round: "Final", date: "2026-09-23", time: "06:45", venue: "Throws field" }
     ]},
-    { id: "hammer-throw", name: "Hammer Throw", cat: "Throws", metric: "distance", results: [], schedule: [
+    { id: "hammer-throw", name: "Hammer Throw", cat: "Throws", metric: "distance", results: [{"div":"UG","round":"Final","place":1,"name":"Vydhik","mark":"18.03"},{"div":"UG","round":"Final","place":2,"name":"Rahul Sahu","mark":"15.08"},{"div":"UG","round":"Final","place":3,"name":"Ankit Kumar","mark":"14.23"}], schedule: [
       { div: "UG", round: "Final", date: "2026-10-02", time: "16:30", venue: "Throws field" },
       { div: "PG", round: "Final", date: "2026-10-02", time: "06:45", venue: "Throws field" }
     ]},
