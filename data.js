@@ -60,11 +60,11 @@ window.SITE = {
           } },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "cricket", name: "Cricket", posterByDiv: { UG: "cricket-ug.jpg", PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharatha.jpg"] }, tagline: "2 innings, 20 overs a side",
+    { id: "cricket", name: "Cricket", posterByDiv: { UG: ["cricket-ug.jpg"], PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharatha.jpg"] }, tagline: "UG Final · Three innings · Target 94",
       fixtures: [
-        { div: "UG", round: "Final", date: "2026-08-30", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b",
-          result: "Arjuna won, chasing a target of 94.",
-          periods: { label: "Innings", rows: [["124/9 (20 ov)", "–"], ["–", "138/8 (20 ov)"], ["106 all out (15.2 ov)", "–"], ["–", "Won chasing 94"]] } },
+        { div: "UG", round: "Final", date: "2026-08-30", time: "08:20", venue: "Cricket ground", a: "bh", b: "ar", sa: "124", sb: "138", status: "final", winner: "b",
+          result: "Arjunas won. Three innings were played; the target in the third innings was 94.",
+          periods: { label: "Innings", rows: [["124/9", "–"], ["–", "138/8"], ["106 all out", "–"], ["–", "77/1"]] } },
         { div: "PG", round: "Final", date: "2026-09-13", time: "08:00", venue: "Cricket ground", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
     { id: "volleyball", name: "Volleyball", posterByDiv: { PG: "volleyball-pg.jpg" }, tagline: "Best of 5 sets",
