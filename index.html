@@ -449,6 +449,32 @@ footer,#foot{color:#8192aa;font-size:12px;letter-spacing:.04em;text-align:center
 .stand-table-wrap{border:1px solid #ffffff1b;border-radius:12px;overflow:auto;background:#ffffff03}.stand-table{min-width:600px}.stand-table th{font-size:10px;letter-spacing:.13em;padding:14px 16px;color:#91a2ba}.stand-table td{padding:13px 16px;border-bottom:1px solid #ffffff0d;color:#c4d0df;font-size:13px}.stand-table tbody tr:hover{background:#d7ff3508}.stand-table tbody tr:first-child{background:#d7ff3509}.stand-table .stand-name{font-weight:700;color:#f4f7fb}
 .stand-position{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:6px;background:#ffffff0b;font:800 12px var(--body);color:#a9b8cc}.stand-position.gold{background:#d7ff3520;color:var(--hot)}.stand-position.silver{background:#cbd7e820;color:#dce6f5}.stand-position.bronze{background:#f0a87e20;color:#f0a87e}.stand-total{display:inline-block;min-width:38px;text-align:center;background:var(--hot);color:#080d18;padding:5px 8px;border-radius:5px;font-size:14px}.stand-footnote{font-size:11px;color:#8293aa;line-height:1.7;margin-top:18px;max-width:850px}
 @media(max-width:650px){.stand-podium{grid-template-columns:1fr;gap:10px}.stand-pod,.stand-pod.champion{min-height:0;transform:none;padding:18px}.stand-points{margin:12px 0 6px;font-size:54px}.stand-pod h3{font-size:25px}.stand-table-head{align-items:flex-start;flex-direction:column}.standings-page>h1{font-size:clamp(62px,16vw,95px)}}
+
+/* Final overrides: keep fixture winner emphasis subtle and preserve readable scores. */
+.fx .side.win{
+  background:transparent!important;
+  background-color:transparent!important;
+  color:var(--paper)!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:4px 0!important;
+  transform:none!important;
+}
+.fx .side.win .t{color:var(--paper)!important}
+.fx .side.win .s{color:var(--hot)!important}
+.fx .side .sw{flex:0 0 12px}
+.fx .side .t{min-width:0}
+.fx .side .tag{margin-left:4px}
+.fx{max-width:760px;padding:18px 20px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 10px 28px rgba(0,0,0,.12)}
+.fx .m{margin-bottom:10px;line-height:1.6}
+.fx .side{min-height:34px}
+.fx .fxnote{line-height:1.7}
+@media(max-width:600px){
+  .fx{padding:14px 12px;border-radius:12px}
+  .fx .m{gap:6px;font-size:12px}
+  .fx .side .s{font-size:23px}
+}
 </style>
 </head>
 <body>
