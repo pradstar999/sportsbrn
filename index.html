@@ -587,8 +587,7 @@ function findPhotos(o){
     return found;})());
 }
 function galleryBlock(o){
-  const ph=[...Array(4)].map(()=>`<div class="ph">Photo<small>coming soon</small></div>`).join("");
-  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}">${ph}</div><p class="meta" data-galnote style="margin-top:8px">Photos from the ground will appear here.</p>`;
+  return `<h2 class="h2">Photos</h2><div class="empty photo-status" style="padding:38px 24px;margin-top:16px;background:linear-gradient(135deg,rgba(77,163,255,.10),rgba(199,146,255,.08));border-style:solid;border-color:var(--line2)"><div style="font-size:30px;margin-bottom:10px">▧ ✦</div><h3 style="font-size:32px;color:var(--hot);margin-bottom:10px">A Little Pause Behind the Lens</h3><p style="max-width:540px;margin:0 auto;color:#b6bfd9;line-height:1.8">Our photo archive is temporarily offline while the server gets back on its feet. The moments are worth the wait — we’ll be back with the memories soon.</p><div style="margin-top:18px;font-size:11px;letter-spacing:.18em;color:#9fa9c7;font-weight:700">PHOTO ARCHIVE · TEMPORARILY UNAVAILABLE</div></div>`;
 }
 async function initGalleries(){
   for(const el of document.querySelectorAll("[data-gal]")){
