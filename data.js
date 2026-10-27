@@ -89,7 +89,7 @@ window.SITE = {
   /* cat: Track | Jumps | Throws | Other      metric: time | distance | height
      record (optional): {mark:"11.20", name:"Name", house:"bh", year:"2024"} */
   individualEvents: [
-    { id: "100m", name: "100m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"12.34"},{"div":"UG","round":"Final","place":2,"name":"Ojas Jagtap","mark":"12.50"},{"div":"UG","round":"Final","place":3,"name":"Amon Sahu","mark":"12.53"}], schedule: [
+    { id: "100m", name: "100m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"12.34"},{"div":"UG","round":"Final","place":2,"name":"Ojas Jagtap","mark":"12.50"},{"div":"UG","round":"Final","place":3,"name":"Aman Sahu","mark":"12.53"}], schedule: [
       { div: "UG", round: "Heats", date: "2026-10-01", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Semi Finals", date: "2026-10-02", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Final", date: "2026-10-03", time: "06:30", venue: "Athletic track" },
