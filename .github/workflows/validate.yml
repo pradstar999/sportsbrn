@@ -24,13 +24,13 @@ jobs:
           node <<'NODE'
           const fs = require('fs');
           const html = fs.readFileSync('index.html', 'utf8');
-          const scripts = [...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];
+          const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)];
           if (!scripts.length) throw new Error('No inline application script found');
           for (let i = 0; i < scripts.length; i++) {
             new Function(scripts[i][1]);
-            console.log(`Inline script ${i + 1}: syntax OK`);
+            console.log(\`Inline script \${i + 1}: syntax OK\`);
           }
-          if (/const\\s+ADMIN_PASSWORD\\s*=|SSSIHL@2026/.test(html)) {
+          if (/const\s+ADMIN_PASSWORD\s*=|SSSIHL@2026/.test(html)) {
             throw new Error('A hard-coded admin password was found in index.html');
           }
           NODE
