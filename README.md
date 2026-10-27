@@ -6,11 +6,24 @@ schedules/results and the schedule page are scoped to whichever division is curr
 A sport only appears in a division's House events list if it has a fixture in that division —
 so PG currently shows only basketball, cricket and volleyball, while UG shows all five.
 
-**Admin login:** username `admin`, password `SSSIHL@2026` (set in `index.html`, search for
-`ADMIN_USER`/`ADMIN_PASSWORD`). Change both before you publish this for real.
+**Admin login:** credentials are verified by a Netlify Function. Do not put passwords or API tokens in `index.html`, `data.js`, or any other public file. Configure the required Netlify environment variables before using admin publishing (see Deployment below).
 
 
 Static site for the SSSIHL Brindavan sports meet.
+
+## Deployment
+
+This is a static site hosted on Netlify with two serverless functions. Before using it in production, configure these variables in **Netlify → Site configuration → Environment variables** for the deployed site and the production deploy context:
+
+- `ADMIN_PASSWORD` — a long, unique password used for server-side admin sign-in and publishing.
+- `GITHUB_TOKEN` — a fine-grained GitHub token scoped only to this repository, with **Contents: read and write** permission.
+- `GITHUB_REPO` — optional; defaults to `pradstar999/sportsbrn`.
+- `GITHUB_BRANCH` — optional; defaults to `main`.
+- `ADMIN_USER` — optional; defaults to `admin`.
+
+Never commit these values to GitHub. Rotate any token or password that has previously been committed or shared. The publish function validates credentials server-side and writes only `data.js`; the browser-side session flag is only a UI convenience, not an authorization boundary for local editing/exporting.
+
+After configuring variables, deploy the latest `main` branch and verify the public site, admin sign-in, and publishing flow in Netlify. A GitHub commit alone does not prove that the production deployment succeeded.
 
 ## Event model
 
