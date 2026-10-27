@@ -70,7 +70,7 @@ h1,h2,h3{font-family:var(--display);line-height:.95;font-weight:900}
 .sc .poster{position:absolute;inset:0;width:100%;height:100%}
 .sc-b{position:absolute;left:0;right:0;bottom:0;padding:44px 14px 14px;background:linear-gradient(transparent,rgba(6,10,26,.92))}
 .sc h3{font-size:36px}.sc:hover{border-color:var(--hot)}
-.win.over{background:var(--dim);color:#fff}.overbadge{background:var(--dim)!important;color:#fff!important}.win{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:99px;background:var(--c);color:#111;font-weight:600;font-size:13px}
+.sc .win.over{background:var(--dim);color:#fff}.overbadge{background:var(--dim)!important;color:#fff!important}.sc .win{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:99px;background:var(--c);color:#111;font-weight:600;font-size:13px}
 .soon{display:inline-block;margin-top:6px;color:var(--dim);font-size:13px}
 img.poster,img.pl{object-fit:cover;display:block}
 .ph{display:grid;place-items:center;text-align:center;color:var(--dim);font-size:13px;background:repeating-linear-gradient(135deg,var(--ink2) 0 14px,var(--ink3) 14px 28px);overflow:hidden}
@@ -114,7 +114,7 @@ img.poster,img.pl{object-fit:cover;display:block}
 .fx .m{font-size:13px;color:var(--dim);display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
 .side{display:flex;align-items:center;gap:10px;padding:4px 0}
 .side .sw{width:12px;height:12px;border-radius:3px;background:var(--c)}.side .t{flex:1;font-weight:600}
-.side .s{font:800 24px var(--display)}.side.win .t,.side.win .s{color:var(--hot)}
+.side .s{font:800 24px var(--display)}.side.sc .win .t,.side.win .s{color:var(--hot)}
 .tag{font-size:12px;background:var(--hot);color:var(--ink);border-radius:99px;padding:1px 8px;font-weight:600}
 .badge{padding:2px 8px;border-radius:99px;background:var(--pink);font-weight:600;font-size:12px}
 .badge.upcoming{background:var(--mint);color:var(--ink)}
@@ -282,7 +282,7 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 .scoreboard{margin:18px 0;padding:22px;border:1px solid var(--line2);border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02))}
 .sbrow{display:flex;align-items:center;justify-content:center;gap:22px}
 .sbside{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--dim)}
-.sbside.win{color:#fff}
+.sbside.sc .win{color:#fff}
 .sbside.r{flex-direction:row-reverse}
 .sbscore{font:900 56px var(--display);color:#fff;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .sbdash{color:var(--dim);font-weight:400}
@@ -381,7 +381,7 @@ body{background:radial-gradient(ellipse at 80% 0%,rgba(49,89,151,.22),transparen
 .sc:hover:before{border-color:#d7ff3560}
 .sc .sc-b{z-index:2;padding:65px 17px 17px;background:linear-gradient(transparent,rgba(3,7,15,.96))}
 .sc h3{font-size:clamp(30px,3vw,42px);letter-spacing:-.025em}
-.win{border-radius:5px;background:var(--hot);color:#0b111d;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.sc .win{border-radius:5px;background:var(--hot);color:#0b111d;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .ev{border:1px solid #e0e6f2;border-radius:12px;box-shadow:5px 5px 0 var(--hot);transition:transform .2s,box-shadow .2s}
 .ev:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
 .ev h3{font-size:33px;letter-spacing:-.025em}
