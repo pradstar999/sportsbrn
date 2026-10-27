@@ -985,9 +985,9 @@ function individualStandings(div){
   const podiumHtml=podium.length? '<div class="stand-podium">' + podium.map(({a,rank})=>
     '<article class="stand-pod '+medal(rank)+(rank===1?" champion":"")+'"><div class="stand-rank">'+(rank===1?"CHAMPION":ordinal(rank))+'</div>'+
     '<div class="stand-points">'+a.points+'<small>PTS</small></div><h3>'+esc(a.name)+'</h3>'+
-    '<div class="stand-medals"><span>🥇 '+a.first+'</span><span>🥈 '+a.second+'</span><span>🥉 '+a.third+'</span></div>'+
+    '<div class="stand-medals"><span>1st: '+a.first+'</span><span>2nd: '+a.second+'</span><span>3rd: '+a.third+'</span></div>'+
     '<small>'+a.events+' podium '+(a.events===1?"finish":"finishes")+'</small></article>').join("")+'</div>' : '<div class="empty">No individual podium results have been recorded for '+esc(div)+' yet.</div>';
-  const table=rows.length? '<div class="stand-table-wrap"><table class="stand-table"><thead><tr><th>RANK</th><th>ATHLETE</th><th>🥇</th><th>🥈</th><th>🥉</th><th>EVENTS</th><th class="n">POINTS</th></tr></thead><tbody>'+
+  const table=rows.length? '<div class="stand-table-wrap"><table class="stand-table"><thead><tr><th>RANK</th><th>ATHLETE</th><th>1ST</th><th>2ND</th><th>3RD</th><th>EVENTS</th><th class="n">POINTS</th></tr></thead><tbody>'+
     rows.map((a,i)=>'<tr><td><span class="stand-position '+(i<3?medal(i+1):"")+'">'+String(i+1).padStart(2,"0")+'</span></td><td class="stand-name">'+esc(a.name)+'</td><td>'+a.first+'</td><td>'+a.second+'</td><td>'+a.third+'</td><td>'+a.events+'</td><td class="n"><strong class="stand-total">'+a.points+'</strong></td></tr>').join("")+'</tbody></table></div>' : "";
   return '<div class="page standings-page"><div class="stand-kicker">ANNUAL SPORTS MEET 2026–27 · '+esc(div)+' DIVISION</div>'+
     '<h1>INDIVIDUAL<br><em>STANDINGS.</em></h1><p class="lede">Every podium finish counts. Athletes earn <b>5 points for 1st</b>, <b>3 for 2nd</b>, and <b>1 for 3rd</b>. Totals update automatically from recorded individual-event results.</p>'+
