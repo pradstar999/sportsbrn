@@ -21,8 +21,8 @@
    ADD A RESULT (inside an individual event):
      results:[ {div:"UG", name:"Full Name", house:"ar", mark:"2:04.80", round:"Final"} ]
        time events: "11.45" or "2:04.80"   distance/height events: metres like "5.82"
-   OPTIONAL ON A FIXTURE: per-set / per-quarter scores and scorers (a = Bharathas, b = Arjuna):
-     periods:{label:"Quarter", rows:[[9,4],[4,4],[6,4],[10,3]]}      (label "Quarter" or "Set"; each row = [Bharathas, Arjuna])
+   OPTIONAL ON A FIXTURE: per-set / per-quarter scores and scorers (a = Bharathas, b = Arjunas):
+     periods:{label:"Quarter", rows:[[9,4],[4,4],[6,4],[10,3]]}      (label "Quarter" or "Set"; each row = [Bharathas, Arjunas])
      scorers:{bh:[{name:"Name", pts:4}], ar:[{name:"Name", pts:11}]}
      result:"Short result line"   (shown under the scoreboard; if sa and sb are empty the big score shows "vs")
      periods label can also be "Innings" (cricket: one column per innings, put each score in the batting side's cell)
@@ -46,7 +46,7 @@ window.SITE = {
 
   houses: [
     { id: "bh", name: "Bharathas", color: "#ff5c5c" },
-    { id: "ar", name: "Arjuna",   color: "#4da3ff" }
+    { id: "ar", name: "Arjunas",   color: "#4da3ff" }
   ],
 
   houseSports: [
@@ -60,7 +60,7 @@ window.SITE = {
           } },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "cricket", name: "Cricket", posterByDiv: { UG: ["cricket-ug.jpg"], PG: ["cricket-pg-arjuna.jpg", "cricket-pg-bharathas.jpg"] }, tagline: "UG Final · Three innings · Target 94",
+    { id: "cricket", name: "Cricket", posterByDiv: { UG: ["cricket-ug.jpg"], PG: ["cricket-pg-arjunas.jpg", "cricket-pg-bharathas.jpg"] }, tagline: "UG Final · Three innings · Target 94",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-08-30", time: "08:20", venue: "Cricket ground", a: "bh", b: "ar", sa: "124", sb: "138", status: "final", winner: "b",
           result: "Arjunas won. Three innings were played; the target in the third innings was 94.",
@@ -73,7 +73,7 @@ window.SITE = {
           periods: { label: "Set", rows: [[21, 16], [22, 20], [18, 21], [21, 12]] }, result: "Bharathas won 4–1." },
         { div: "PG", round: "Final", date: "2026-09-10", time: "16:30", venue: "Volleyball court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
-    { id: "football", name: "Football", posterByDiv: { UG: ["football-ug-arjuna.jpg", "football-ug-bharathas.jpg"] }, tagline: "30 + 10 + 30 minutes",
+    { id: "football", name: "Football", posterByDiv: { UG: ["football-ug-arjunas.jpg", "football-ug-bharathas.jpg"] }, tagline: "30 + 10 + 30 minutes",
       fixtures: [
         { div: "UG", round: "Final", date: "2026-09-15", time: "16:30", venue: "Main ground", a: "bh", b: "ar", sa: "1", sb: "1", status: "final", winner: "a", note: "Full time 1-1. Bharathas won 2-1 on penalties." }
       ], players: [] },
