@@ -105,7 +105,7 @@ window.SITE = {
       { div: "PG", round: "Semi Finals", date: "2026-09-26", time: "06:30", venue: "Athletic track" },
       { div: "PG", round: "Final", date: "2026-09-28", time: "06:30", venue: "Athletic track" }
     ]},
-    { id: "400m", name: "400m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"1:01.94"},{"div":"UG","round":"Final","place":2,"name":"Sivaramakrishnan","mark":"1:02.66"},{"div":"UG","round":"Final","place":3,"name":"A Aditya Sai","mark":"1:06.28"}], schedule: [
+    { id: "400m", name: "400m", cat: "Track", metric: "time", results: [{"div":"UG","round":"Final","place":1,"name":"Deep Das","mark":"1:01.94"},{"div":"UG","round":"Final","place":2,"name":"Sivaramakrishnan","mark":"1:02.66"},{"div":"UG","round":"Final","place":3,"name":"Aditya Sai","mark":"1:06.28"}], schedule: [
       { div: "UG", round: "Heats", date: "2026-09-21", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Semi Finals", date: "2026-09-22", time: "06:30", venue: "Athletic track" },
       { div: "UG", round: "Final", date: "2026-09-23", time: "06:30", venue: "Athletic track" },
