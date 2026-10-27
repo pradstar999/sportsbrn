@@ -952,7 +952,6 @@ function home(div){
       <section><h2 class="h2">Individual events</h2><p class="lede">${D.individualEvents.length} events across track, jumps, throws, relay, racket and table sports.</p><div class="evgrid">${D.individualEvents.slice(0,6).map(e=>evCard(e,div)).join("")}</div><a class="btn solid" href="#/individual" style="margin-top:18px">See all individual events</a></section>
       <aside class="dashpanel" style="margin-top:64px"><h3>Coming up</h3><div class="mini-results">${miniUpcoming||'<div class="empty">Schedule coming soon.</div>'}</div></aside>
     </div>
-    <h2 class="h2">${esc(divName(div))} standings</h2>${houseBoard(div)}
   </div>`;
 }
 function houseList(div){return `<div class="page"><h1>House events — ${div}</h1><p class="lede">The ${esc(divName(div).toLowerCase())} championship is scored on its own. UG and PG do not share fixtures or standings.</p><div class="sgrid">${sportsFor(div).map(sp=>sportCard(sp,div)).join("")}</div></div>`}
