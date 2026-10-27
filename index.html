@@ -970,7 +970,7 @@ function sportPage(sp,div){
 function individualStandings(div){
   const pointsByPlace={1:5,2:3,3:1};
   const totals=new Map();
-  D.individualEvents.forEach(ev=>(ev.results||[]).filter(r=>r.div===div).forEach(r=>{
+  D.individualEvents.filter(ev=>ev.id!=="10000m").forEach(ev=>(ev.results||[]).filter(r=>r.div===div).forEach(r=>{
     const place=Number(r.place),pts=pointsByPlace[place],name=String(r.name||"").trim();
     if(!pts||!name)return;
     const key=name.toLocaleLowerCase().replace(/\\s+/g," ");
