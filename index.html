@@ -605,6 +605,35 @@ body:before{
  .hero .sub,.hero .eyebrow,.hero h1,.hero .lanes,.nextrow{animation:none!important}
 }
 body.motion-off *,body.motion-off *:before,body.motion-off *:after{animation:none!important;scroll-behavior:auto!important}
+
+/* Oath & Reflections page */
+.oath-page>h1{font-size:clamp(52px,9vw,110px);line-height:.9;letter-spacing:-.035em;text-transform:uppercase;margin:12px 0 18px}
+.oath-panel{position:relative;overflow:hidden;margin:34px 0 62px;padding:clamp(26px,5vw,58px);border:1px solid rgba(215,255,53,.28);border-radius:20px;background:radial-gradient(ellipse at 90% 0%,rgba(215,255,53,.1),transparent 42%),linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.015))}
+.oath-panel:after{content:"";position:absolute;right:-30px;bottom:-90px;width:260px;height:260px;border:1px solid rgba(215,255,53,.12);border-radius:50%;box-shadow:0 0 0 25px rgba(215,255,53,.025),0 0 0 55px rgba(215,255,53,.018);pointer-events:none}
+.oath-mark{font:120px/.6 Georgia,serif;color:var(--hot);opacity:.8}
+.oath-kicker,.reflection-label{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--hot);text-transform:uppercase}
+.oath-panel h2,.reflection-intro h2,.reflection-scoreline h2{font-size:clamp(28px,4vw,48px);line-height:1.02;letter-spacing:-.02em;margin:14px 0}
+.oath-copy{font-size:18px;line-height:1.8;color:#e8eef8;max-width:60ch;margin-top:22px}
+.oath-note{color:var(--dim);font-size:12px;margin-top:18px}
+.reflection-intro{max-width:700px;margin-bottom:25px}
+.reflection-intro>p{color:var(--dim);line-height:1.8}
+.reflection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.reflection-card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:320px;padding:clamp(22px,3vw,34px);border:1px solid var(--line);border-top:4px solid var(--house);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));transition:transform .22s,border-color .22s,box-shadow .22s}
+.reflection-card:hover{transform:translateY(-4px);border-color:var(--house);box-shadow:0 18px 42px #0004}
+.reflection-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.reflection-symbol{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--house);color:#08101b;font:900 27px var(--display)}
+.reflection-card h2{font:800 clamp(32px,4vw,46px) var(--display);text-transform:uppercase;margin-bottom:14px}
+.reflection-card>p{color:#c4d0e2;line-height:1.85;flex:1}
+.reflection-takeaway{border-top:1px solid var(--line);padding-top:17px;margin-top:24px;display:grid;gap:8px}
+.reflection-takeaway span{font-size:10px;letter-spacing:.17em;color:var(--house);font-weight:800}
+.reflection-takeaway b{font-size:15px}
+.reflection-scoreline{margin-top:56px;padding:clamp(22px,4vw,38px);border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+.reflection-results{margin-top:22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 26px}
+.reflection-result{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:13px}
+.reflection-result span{color:var(--dim)}
+.reflection-result b{text-align:right}
+.reflection-foot{margin:28px auto 0;text-align:center;max-width:720px;color:var(--dim);font-size:15px;line-height:1.8}
+@media(max-width:720px){.reflection-grid,.reflection-results{grid-template-columns:1fr}.reflection-card{min-height:0}.oath-panel{margin:26px 0 44px}.reflection-scoreline{margin-top:40px}}
 </style>
 </head>
 <body>
@@ -616,6 +645,7 @@ body.motion-off *,body.motion-off *:before,body.motion-off *:after{animation:non
     <a href="#/house" data-r="house">House</a>
     <a href="#/individual" data-r="individual">Individual</a>
     <a href="#/standings" data-r="standings">Standings</a>
+    <a href="#/reflections" data-r="reflections">Oath & Reflections</a>
     <a href="#/schedule" data-r="schedule">Schedule</a>
     <a href="#/admin" data-r="admin">Admin</a>
   </nav>
@@ -1103,6 +1133,7 @@ function home(div){
       <a class="quick" href="#/schedule"><strong>Full schedule ↗</strong><span>Every ${div} slot, day by day</span></a>
       <a class="quick" href="#/individual"><strong>Athlete events ↗</strong><span>Track, jumps, throws & racket sports</span></a>
       <a class="quick" href="#/house"><strong>House championship ↗</strong><span>Fixtures, squads and standings (${div})</span></a>
+      <a class="quick" href="#/reflections"><strong>Oath & Reflections ↗</strong><span>The promise we share and each house’s journey</span></a>
     </div>
     <div class="homegrid">
       <section><h2 class="h2">House events</h2><div class="sgrid">${sportsFor(div).map(sp=>sportCard(sp,div)).join("")}</div></section>
@@ -1113,6 +1144,21 @@ function home(div){
       <aside class="dashpanel" style="margin-top:64px"><h3>Coming up</h3><div class="mini-results">${miniUpcoming||'<div class="empty">Schedule coming soon.</div>'}</div></aside>
     </div>
   </div>`;
+}
+function reflectionsPage(div){
+  const finals=D.houseSports.flatMap(sp=>fixturesFor(sp,div).filter(f=>f.status==="final"&&(f.winner==="a"||f.winner==="b")).map(f=>({sport:sp.name,fixture:f,winner:f.winner==="a"?f.a:f.b,loser:f.winner==="a"?f.b:f.a})));
+  const wins=id=>finals.filter(x=>x.winner===id);
+  const bh=wins("bh"), ar=wins("ar");
+  const names=list=>list.length?list.map(x=>x.sport).join(", "):"the contests across the meet";
+  const bhLine=bh.length?"The recorded "+div+" finals show Bharatha earning victories in "+names(bh)+". These results reflect the value of preparation, communication and composure under pressure. The football final, decided on penalties after a 1–1 draw, is a reminder that resilience matters as much as the scoreline.":"Bharatha’s journey through the "+div+" meet is about more than the final score. Every fixture offered a chance to build discipline, trust teammates and respond to pressure with character.";
+  const arLine=ar.length?"Arjuna’s recorded "+div+" final victories came in "+names(ar)+". The cricket final was a standout: Arjuna reached 138 and chased the third-innings target of 94 with 77/1, showing how patience and a clear plan can decide a contest. The ball badminton final also went Arjuna’s way, 2–0 in sets.":"Arjuna’s journey through the "+div+" meet is about more than the final score. Every fixture offered a chance to build discipline, trust teammates and respond to pressure with character.";
+  const rows=finals.map(x=>'<div class="reflection-result"><span>'+esc(x.sport)+'</span><b style="color:'+H(x.winner).color+'">'+esc(H(x.winner).name)+(x.fixture.sa!==""&&x.fixture.sb!==""?" · "+esc(x.fixture.sa)+"–"+esc(x.fixture.sb):"")+"</b></div>").join("");
+  return '<div class="page oath-page"><div class="eyebrow">SSSIHL · BRINDAVAN CAMPUS · BEYOND THE SCOREBOARD</div><h1>Oath <em style="color:var(--hot)">&amp;</em> Reflections</h1><p class="lede">A promise before competition. A lesson after it. A shared memory long after the final whistle.</p>'+
+    '<section class="oath-panel"><div class="oath-mark">“</div><p class="oath-kicker">THE SPORTS MEET OATH</p><h2>The promise we stand by</h2><p class="oath-copy">The official oath will be added here.</p><p class="oath-note">This space is reserved for the exact oath text.</p></section>'+
+    '<div class="reflection-intro"><span class="eyebrow">AFTER THE FINAL WHISTLE</span><h2>Two houses. One spirit.</h2><p>Reflections inspired by the recorded '+esc(div)+' results — celebrating achievement while recognising the lessons every contest leaves behind.</p></div>'+
+    '<div class="reflection-grid"><article class="reflection-card" style="--house:'+H("bh").color+'"><div class="reflection-top"><span class="reflection-symbol">B</span><span class="reflection-label">HOUSE REFLECTION · '+esc(div)+'</span></div><h2>Bharatha</h2><p>'+esc(bhLine)+'</p><div class="reflection-takeaway"><span>THE LESSON</span><b>Compete with courage. Respond with character.</b></div></article>'+
+    '<article class="reflection-card" style="--house:'+H("ar").color+'"><div class="reflection-top"><span class="reflection-symbol">A</span><span class="reflection-label">HOUSE REFLECTION · '+esc(div)+'</span></div><h2>Arjuna</h2><p>'+esc(arLine)+'</p><div class="reflection-takeaway"><span>THE LESSON</span><b>Trust the team. Stay patient. Finish together.</b></div></article></div>'+
+    '<section class="reflection-scoreline"><div><span class="eyebrow">THE RESULTS THAT SHAPED THESE REFLECTIONS</span><h2>Respect the contest. Remember the effort.</h2></div><div class="reflection-results">'+(rows||'<p class="meta">Final results will appear here as they are recorded.</p>')+'</div></section><p class="reflection-foot">Winning is a moment. Sportsmanship is a habit. The spirit of the meet belongs to everyone who showed up, gave their best and stood beside their house.</p></div>';
 }
 function houseList(div){return `<div class="page"><h1>House events — ${div}</h1><p class="lede">The ${esc(divName(div).toLowerCase())} championship is scored on its own. UG and PG do not share fixtures or standings.</p><div class="sgrid">${sportsFor(div).map(sp=>sportCard(sp,div)).join("")}</div></div>`}
 function sportPage(sp,div){
@@ -1222,6 +1268,7 @@ function route(){
   else if(a==="individual"&&!b){html=indList(div);title="Individual events"}
   else if(a==="individual"){const e=event(b);html=e?eventPage(e,div):notFound();if(e)title=e.name}
   else if(a==="standings"){html=individualStandings(div);title="Individual standings"}
+  else if(a==="reflections"){html=reflectionsPage(div);title="Oath & Reflections"}
   else if(a==="schedule"){html=schedulePage(div);title="Schedule"}
   else if(a==="admin"){html=adminPage();title=isAdmin()?"Admin":"Admin access"}
   else html=notFound();
