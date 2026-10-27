@@ -431,6 +431,20 @@ footer,#foot{color:#8192aa;font-size:12px;letter-spacing:.04em;text-align:center
 }
 </style>
 
+<style id="individual-standings-style">
+.standings-page{position:relative}.stand-kicker{font-size:10px;font-weight:800;letter-spacing:.19em;color:var(--hot);text-transform:uppercase}
+.standings-page>h1{font-size:clamp(68px,12vw,150px);line-height:.78;letter-spacing:-.04em;margin:22px 0 24px}.standings-page>h1 em{font-style:normal;color:var(--hot)}
+.standings-page>.lede{max-width:650px;font-size:16px;line-height:1.8}.stand-rule{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #ffffff30;border-bottom:1px solid #ffffff30;padding:12px 0;margin:28px 0 16px;font-size:10px;letter-spacing:.16em;color:#a9b8cc;font-weight:700}
+.stand-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;margin:18px 0 50px}.stand-pod{position:relative;min-width:0;overflow:hidden;border:1px solid #ffffff1c;border-radius:12px;padding:22px;background:linear-gradient(145deg,#162238,#0d1421);display:flex;flex-direction:column;align-items:flex-start;min-height:220px}
+.stand-pod:after{content:"";position:absolute;right:-36px;top:40px;width:130px;height:130px;border:1px solid #ffffff12;border-radius:50%;box-shadow:0 0 0 18px #ffffff04;pointer-events:none}.stand-pod.champion{background:linear-gradient(145deg,#29351b,#111a18);border-color:#d7ff3560;transform:translateY(-8px)}.stand-pod.silver{background:linear-gradient(145deg,#222b3a,#0d1421)}.stand-pod.bronze{background:linear-gradient(145deg,#38271f,#11141b)}
+.stand-rank{font-size:10px;letter-spacing:.18em;font-weight:800;color:var(--hot)}.stand-pod.silver .stand-rank{color:#cbd7e8}.stand-pod.bronze .stand-rank{color:#f0a87e}
+.stand-points{display:flex;align-items:baseline;gap:7px;font:900 clamp(48px,7vw,76px)/1 var(--display);letter-spacing:-.04em;margin:20px 0 8px;color:#fff}.stand-pod.champion .stand-points{color:var(--hot)}.stand-points small{font:700 10px var(--body);letter-spacing:.16em;color:#a9b8cc}
+.stand-pod h3{font-size:clamp(20px,2.6vw,31px);line-height:1.05;overflow-wrap:anywhere;max-width:100%;margin-bottom:14px}.stand-medals{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;margin-top:auto;margin-bottom:9px}.stand-pod>small{color:#a9b8cc;font-size:11px}
+.stand-table-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:16px}.stand-table-head .h2{margin:8px 0 0}.stand-key{display:flex;flex-wrap:wrap;gap:8px}.stand-key span{border:1px solid #ffffff1b;border-radius:6px;padding:8px 10px;color:#a9b8cc;font-size:11px}.stand-key b{color:var(--hot);margin-right:4px}
+.stand-table-wrap{border:1px solid #ffffff1b;border-radius:12px;overflow:auto;background:#ffffff03}.stand-table{min-width:600px}.stand-table th{font-size:10px;letter-spacing:.13em;padding:14px 16px;color:#91a2ba}.stand-table td{padding:13px 16px;border-bottom:1px solid #ffffff0d;color:#c4d0df;font-size:13px}.stand-table tbody tr:hover{background:#d7ff3508}.stand-table tbody tr:first-child{background:#d7ff3509}.stand-table .stand-name{font-weight:700;color:#f4f7fb}
+.stand-position{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:6px;background:#ffffff0b;font:800 12px var(--body);color:#a9b8cc}.stand-position.gold{background:#d7ff3520;color:var(--hot)}.stand-position.silver{background:#cbd7e820;color:#dce6f5}.stand-position.bronze{background:#f0a87e20;color:#f0a87e}.stand-total{display:inline-block;min-width:38px;text-align:center;background:var(--hot);color:#080d18;padding:5px 8px;border-radius:5px;font-size:14px}.stand-footnote{font-size:11px;color:#8293aa;line-height:1.7;margin-top:18px;max-width:850px}
+@media(max-width:650px){.stand-podium{grid-template-columns:1fr;gap:10px}.stand-pod,.stand-pod.champion{min-height:0;transform:none;padding:18px}.stand-points{margin:12px 0 6px;font-size:54px}.stand-pod h3{font-size:25px}.stand-table-head{align-items:flex-start;flex-direction:column}.standings-page>h1{font-size:clamp(62px,16vw,95px)}}
+</style>
 </head>
 <body>
 <a class="skip" href="#app">Skip to content</a>
@@ -440,6 +454,7 @@ footer,#foot{color:#8192aa;font-size:12px;letter-spacing:.04em;text-align:center
     <a href="#/" data-r="">Home</a>
     <a href="#/house" data-r="house">House</a>
     <a href="#/individual" data-r="individual">Individual</a>
+    <a href="#/standings" data-r="standings">Standings</a>
     <a href="#/schedule" data-r="schedule">Schedule</a>
     <a href="#/admin" data-r="admin">Admin</a>
   </nav>
@@ -951,6 +966,35 @@ function sportPage(sp,div){
     return `<div class="squad" style="--c:${h.color}"><h3>${esc(h.name)}</h3><div class="pgrid">${pl.length?pl.map(p=>playerCard(sp.id,p,h)).join(""):[...Array(4)].map(()=>`<figure class="pc empty" style="--c:${h.color}"><div class="pl ph"><span class="ini">?</span></div><figcaption><b>Player</b><span>Squad announced soon</span></figcaption></figure>`).join("")}</div></div>`}).join("")}</div>
   ${galleryBlock(sp)}</div>`;
 }
+/* ---------- individual medal standings ---------- */
+function individualStandings(div){
+  const pointsByPlace={1:5,2:3,3:1};
+  const totals=new Map();
+  D.individualEvents.forEach(ev=>(ev.results||[]).filter(r=>r.div===div).forEach(r=>{
+    const place=Number(r.place),pts=pointsByPlace[place],name=String(r.name||"").trim();
+    if(!pts||!name)return;
+    const key=name.toLocaleLowerCase().replace(/\\s+/g," ");
+    if(!totals.has(key))totals.set(key,{name:name,points:0,first:0,second:0,third:0,events:0});
+    const a=totals.get(key);a.points+=pts;a.events++;
+    if(place===1)a.first++;else if(place===2)a.second++;else if(place===3)a.third++;
+  }));
+  const rows=[...totals.values()].sort((a,b)=>b.points-a.points||b.first-a.first||b.second-a.second||a.name.localeCompare(b.name));
+  const medal=n=>n===1?"gold":n===2?"silver":"bronze";
+  const ordinal=n=>n===1?"1st":n===2?"2nd":n===3?"3rd":n+"th";
+  const podium=rows.slice(0,3).map((a,i)=>({a:a,rank:i+1}));
+  const podiumHtml=podium.length? '<div class="stand-podium">' + podium.map(({a,rank})=>
+    '<article class="stand-pod '+medal(rank)+(rank===1?" champion":"")+'"><div class="stand-rank">'+(rank===1?"CHAMPION":ordinal(rank))+'</div>'+
+    '<div class="stand-points">'+a.points+'<small>PTS</small></div><h3>'+esc(a.name)+'</h3>'+
+    '<div class="stand-medals"><span>🥇 '+a.first+'</span><span>🥈 '+a.second+'</span><span>🥉 '+a.third+'</span></div>'+
+    '<small>'+a.events+' podium '+(a.events===1?"finish":"finishes")+'</small></article>').join("")+'</div>' : '<div class="empty">No individual podium results have been recorded for '+esc(div)+' yet.</div>';
+  const table=rows.length? '<div class="stand-table-wrap"><table class="stand-table"><thead><tr><th>RANK</th><th>ATHLETE</th><th>🥇</th><th>🥈</th><th>🥉</th><th>EVENTS</th><th class="n">POINTS</th></tr></thead><tbody>'+
+    rows.map((a,i)=>'<tr><td><span class="stand-position '+(i<3?medal(i+1):"")+'">'+String(i+1).padStart(2,"0")+'</span></td><td class="stand-name">'+esc(a.name)+'</td><td>'+a.first+'</td><td>'+a.second+'</td><td>'+a.third+'</td><td>'+a.events+'</td><td class="n"><strong class="stand-total">'+a.points+'</strong></td></tr>').join("")+'</tbody></table></div>' : "";
+  return '<div class="page standings-page"><div class="stand-kicker">ANNUAL SPORTS MEET 2026–27 · '+esc(div)+' DIVISION</div>'+
+    '<h1>INDIVIDUAL<br><em>STANDINGS.</em></h1><p class="lede">Every podium finish counts. Athletes earn <b>5 points for 1st</b>, <b>3 for 2nd</b>, and <b>1 for 3rd</b>. Totals update automatically from recorded individual-event results.</p>'+
+    '<div class="stand-rule"><span>THE MEDAL RACE</span><span>'+rows.length+' ATHLETES SCORED</span></div>'+podiumHtml+
+    '<div class="stand-table-head"><div><span class="stand-kicker">LEADERBOARD</span><h2 class="h2">Every point matters.</h2></div><div class="stand-key"><span><b>1st</b> +5</span><span><b>2nd</b> +3</span><span><b>3rd</b> +1</span></div></div>'+table+
+    '<p class="stand-footnote">Scoring: 1st = 5 points · 2nd = 3 points · 3rd = 1 point. Only recorded individual-event results for the selected division count. Ties are ordered by number of 1st-place finishes, then 2nd-place finishes.</p></div>';
+}
 function indList(div){
   const cats=["All",...new Set(D.individualEvents.map(e=>e.cat))];
   return `<div class="page"><h1>Individual events</h1><p class="lede">Track, jumps, throws, relays and racket sports for the ${esc(divName(div).toLowerCase())} division. No house scoring here — it's athlete against athlete.</p>
@@ -1018,6 +1062,7 @@ function route(){
   else if(a==="house"){const s=sport(b);html=s?sportPage(s,div):notFound();if(s)title=s.name}
   else if(a==="individual"&&!b){html=indList(div);title="Individual events"}
   else if(a==="individual"){const e=event(b);html=e?eventPage(e,div):notFound();if(e)title=e.name}
+  else if(a==="standings"){html=individualStandings(div);title="Individual standings"}
   else if(a==="schedule"){html=schedulePage(div);title="Schedule"}
   else if(a==="admin"){html=adminPage();title=isAdmin()?"Admin":"Admin access"}
   else html=notFound();
