@@ -333,9 +333,7 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 
 <script src="data.js"></script>
 <script>const BASE = window.SITE;
-// Client-side admin gate for this static build. Change this before publishing.
-const ADMIN_USER = "admin";
-const ADMIN_PASSWORD = "SSSIHL@2026";
+// Admin credentials are verified by the Netlify function; never embed secrets in public assets.
 const isAdmin = () => sessionStorage.getItem("sssihl-admin-auth") === "1";
 const adminLogin = () => sessionStorage.setItem("sssihl-admin-auth","1");
 const adminLogout = () => { sessionStorage.removeItem("sssihl-admin-auth"); location.hash="#/"; route(); };
@@ -748,7 +746,7 @@ function importFile(file){
 }
 
 function adminLoginPage(msg=""){
-  return `<div class="page authbox"><div class="adminbox"><div class="lock">🔐</div><h1>Admin access</h1><p class="lede">Results, player records and publishing tools are restricted to administrators.</p><form id="admin-login-form"><div class="field"><label for="admin-user">Username</label><input id="admin-user" type="text" autocomplete="username" value="admin"></div><div class="field"><label for="admin-pass">Password</label><input id="admin-pass" type="password" autocomplete="current-password" placeholder="Enter password" autofocus></div><div class="formactions"><button class="btn solid" type="submit">Sign in</button><a class="btn" href="#/">Back to site</a></div><div class="authmsg">${esc(msg)}</div></form><p class="muted">For this static build, the admin gate is browser-side. For production-grade security, deploy behind Netlify Identity/Auth or another server-side authentication layer.</p></div></div>`;
+  return `<div class="page authbox"><div class="adminbox"><div class="lock">🔐</div><h1>Admin access</h1><p class="lede">Results, player records and publishing tools are restricted to administrators.</p><form id="admin-login-form"><div class="field"><label for="admin-user">Username</label><input id="admin-user" type="text" autocomplete="username" value="admin"></div><div class="field"><label for="admin-pass">Password</label><input id="admin-pass" type="password" autocomplete="current-password" placeholder="Enter password" autofocus></div><div class="formactions"><button class="btn solid" type="submit">Sign in</button><a class="btn" href="#/">Back to site</a></div><div class="authmsg">${esc(msg)}</div></form><p class="muted">Sign-in is verified server-side. Publishing also validates the password on the server; keep ADMIN_PASSWORD and GITHUB_TOKEN only in Netlify environment variables.</p></div></div>`;
 }
 function adminPage(){
   if(!isAdmin()) return adminLoginPage();
@@ -983,13 +981,32 @@ document.addEventListener("click",e=>{
   else if(d.admin==="logout")adminLogout();
 });
 
-document.addEventListener("submit",e=>{
+document.addEventListener("submit",async e=>{
   if(e.target.id!=="admin-login-form")return;
   e.preventDefault();
+  const form=e.target;
   const user=$("#admin-user").value.trim();
   const pass=$("#admin-pass").value;
-  if(user===ADMIN_USER && pass===ADMIN_PASSWORD){adminLogin();route();toast("Admin access granted");}
-  else {e.target.querySelector(".authmsg").textContent="Incorrect username or password.";$("#admin-pass").select();}
+  const msg=form.querySelector(".authmsg");
+  const submit=form.querySelector('button[type="submit"]');
+  submit.disabled=true;
+  msg.textContent="Verifying credentials…";
+  try{
+    const response=await fetch("/.netlify/functions/auth",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:user,password:pass})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||"Sign-in failed. Please try again.");
+    sessionStorage.setItem("sssihl-publish-pw",pass);
+    adminLogin();
+    route();
+    toast("Admin access granted");
+  }catch(err){
+    msg.textContent=err.message||"Could not verify credentials. Check your connection and try again.";
+    $("#admin-pass").select();
+  }finally{submit.disabled=false;}
 });
 $("#lb").addEventListener("click",e=>{if(e.target.classList.contains("scrim")){$("#lb").classList.remove("on");$("#lb").innerHTML=""}});
 $("#sbtn").onclick=openSearch;
