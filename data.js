@@ -56,7 +56,7 @@ window.SITE = {
           periods: { label: "Quarter", rows: [[4, 9], [8, 13], [12, 19], [15, 29]] },
           scorers: {
             bh: [{ name: "Rushi", pts: "2×2" }, { name: "Prathamesh", pts: "2×6, 2×3" }, { name: "Kishan", pts: "2×1" }, { name: "Own basket (by Arjunas)", pts: 2 }],
-            ar: [{ name: "Piyush Yadav", pts: "2×4, 1×3" }, { name: "Subhash", pts: "2×2" }]
+            ar: [{ name: "Piyush Yadav", pts: "2×4, 1×3" }, { name: "Subhash Reddy P", pts: "2×2" }]
           } },
         { div: "PG", round: "Final", date: "2026-08-27", time: "16:30", venue: "Main court", a: "bh", b: "ar", sa: "", sb: "", status: "final", winner: "b" }
       ], players: [] },
@@ -175,7 +175,7 @@ window.SITE = {
       results: [
         { div: "UG", round: "Singles", place: 1, name: "Aman Sahu", mark: "Winner" },
         { div: "UG", round: "Singles", place: 2, name: "G Hemanth", mark: "Runner-up" },
-        { div: "UG", round: "Singles", place: 3, name: "Subhash", mark: "Third" },
+        { div: "UG", round: "Singles", place: 3, name: "Subhash Reddy P", mark: "Third" },
         { div: "PG", round: "Singles", place: 1, name: "Aditya Gurung", className: "2nd MBA", mark: "Winner" },
         { div: "PG", round: "Singles", place: 2, name: "Sai Ram R", className: "2nd MA", mark: "Runner-up" },
         { div: "PG", round: "Singles", place: 3, name: "Sravan Sai", className: "2nd MBA", mark: "Third" }
