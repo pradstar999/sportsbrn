@@ -318,6 +318,20 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 .fx .side.win{background:transparent!important;color:inherit!important;border-radius:0!important;padding:4px 0!important;display:flex!important}
 .fx .side.win .t,.fx .side.win .s{color:var(--hot)!important}
 .fx .side .tag{flex:0 0 auto}
+/* Homepage cinematic video treatment: let the video remain visible behind content. */
+body{background:transparent!important}
+body:before{display:none!important}
+.hero:after{display:none!important}
+/* Video-only backdrop: remove opaque hero panel and decorative overlays. */
+.hero{background:transparent!important;isolation:auto!important}
+.hero:before,.hero:after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
+#bg-shade{background:rgba(0,0,0,.20)!important}
+
+/* Force the background video to show through the entire homepage hero. */
+body{background:transparent!important}
+body:before,.hero:before,.hero:after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
+.hero{background:transparent!important;isolation:auto!important}
+#bg-shade{background:rgba(0,0,0,.22)!important}
 </style>
 
 <style id="sports-corner-redesign">
@@ -640,10 +654,57 @@ body.motion-off *,body.motion-off *:before,body.motion-off *:after{animation:non
 .reflection-foot{margin:28px auto 0;text-align:center;max-width:720px;color:var(--dim);font-size:15px;line-height:1.8}
 @media(max-width:720px){.reflection-grid,.reflection-results{grid-template-columns:1fr}.reflection-card{min-height:0}.oath-panel{margin:26px 0 44px}.reflection-scoreline{margin-top:40px}}
 </style>
+
+<style id="video-only-background-override">
+/* FINAL OVERRIDE: the video is the only page background. */
+html, body, #app, .hero, .page, main, section {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+body {
+  background-image: none !important;
+}
+body::before, .hero::before, .hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+#bg-video {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -2 !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+#bg-shade {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  background: rgba(3, 7, 16, .22) !important;
+}
+body > *:not(#bg-video):not(#bg-shade) {
+  position: relative;
+  z-index: 1;
+}
+.bar {
+  background: rgba(5, 8, 18, .38) !important;
+  backdrop-filter: blur(5px);
+}
+.next, .livebox, .kpi, .quick, .sc, .ev, .fx, .scoreboard, .pc {
+  background-color: rgba(7, 12, 24, .30) !important;
+}
+</style>
+
 </head>
 <body>
-<video id="bg-video" autoplay muted loop playsinline preload="none" aria-hidden="true"><source src="assets/background/sportsbrn-background.mp4" type="video/mp4"></video>
+<video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background.mp4" type="video/mp4"></video>
 <div id="bg-shade" aria-hidden="true"></div>
+<script>document.addEventListener("DOMContentLoaded",()=>{const v=document.getElementById("bg-video");if(!v)return;v.muted=true;v.defaultMuted=true;v.playsInline=true;const start=()=>{const p=v.play();if(p&&p.catch)p.catch(()=>{});};if(v.readyState>=2)start();else{v.addEventListener("canplay",start,{once:true});v.load();}});</script>
 <a class="skip" href="#app">Skip to content</a>
 <header class="bar">
   <a class="logo" href="#/" aria-label="SSSIHL Brindavan Sports Corner home">SSSIHL <span>SPORTS</span></a>
@@ -774,23 +835,35 @@ document.addEventListener("error",e=>{
 /* ---------- gallery (numbered files 1.jpg, 2.jpg ...) ---------- */
 const galCache={};
 const test=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u});
+let galleryManifestPromise;
+function loadGalleryManifest(){
+  if(!galleryManifestPromise)galleryManifestPromise=fetch(asset("gallery-manifest.json"),{cache:"no-cache"})
+    .then(r=>r.ok?r.json():{}).catch(()=>({}));
+  return galleryManifestPromise;
+}
 function findPhotos(o){
   if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${getDivision()}/${f}`)));
   const cacheKey=o.id+"-"+getDivision();
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
-    const found=[],max=D.galleryMax||60,div=getDivision()||"UG";
-    // Prefer division-specific galleries; fall back to legacy shared galleries for older uploads.
+    const div=getDivision()||"UG";
+    const manifest=await loadGalleryManifest();
+    const files=manifest[o.id]||[];
+    if(files.length)return files.map(f=>asset(`gallery/${o.id}/${f}`));
+    const found=[],max=D.galleryMax||60;
     let prefix=`gallery/${o.id}/${div}/`;
     if(!await test(asset(prefix+"1.jpg")))prefix=`gallery/${o.id}/`;
     let i=1;
-    while(i<=max){const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
+    while(i<=max){
+      const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
       const res=await Promise.all(batch.map(n=>test(asset(prefix+n+".jpg"))));
       for(let k=0;k<batch.length;k++){if(res[k])found.push(asset(prefix+batch[k]+".jpg"));else return found;}
-      i+=8;}
-    return found;})());
+      i+=8;
+    }
+    return found;
+  })());
 }
 function galleryBlock(o){
-  return `<h2 class="h2">Photos</h2><div class="empty photo-status" style="padding:38px 24px;margin-top:16px;background:linear-gradient(135deg,rgba(77,163,255,.10),rgba(199,146,255,.08));border-style:solid;border-color:var(--line2)"><div style="font-size:30px;margin-bottom:10px">▧ ✦</div><h3 style="font-size:32px;color:var(--hot);margin-bottom:10px">A Little Pause Behind the Lens</h3><p style="max-width:540px;margin:0 auto;color:#b6bfd9;line-height:1.8">Our photo archive is temporarily offline while the server gets back on its feet. The moments are worth the wait — we’ll be back with the memories soon.</p><div style="margin-top:18px;font-size:11px;letter-spacing:.18em;color:#9fa9c7;font-weight:700">PHOTO ARCHIVE · TEMPORARILY UNAVAILABLE</div></div>`;
+  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}" aria-label="${esc(o.name)} photos"><div class="empty">Loading photos…</div></div>`;
 }
 async function initGalleries(){
   for(const el of document.querySelectorAll("[data-gal]")){
@@ -1128,10 +1201,6 @@ function home(div){
     <h1>BRINDAVAN<br><em>SPORTS</em></h1>
     <p class="sub">One place for fixtures, live scores, athlete results, schedules, squads and memories from the campus.</p>
     ${laneHTML(t)}
-    <div class="nextrow">
-      <div class="next"><h3>Next on the field</h3>${next?`<div class="t">${esc(next.title)}</div><small>${esc(fmtDay(next.dt))} · ${esc(fmtTime(next.dt,next.time))}${next.venue?" · "+esc(next.venue):""}</small><div class="cd" data-cd="${next.dt.getTime()}"></div>`:`<div class="t">No upcoming events</div><small>The next fixture will appear here.</small>`}</div>
-      <div class="livebox"><h3><i class="dot" style="display:inline-block;margin-right:7px"></i> Live now</h3>${live.length?live.map(({sp,f})=>`<a class="chip" href="#/house/${sp.id}" style="text-decoration:none"><b>${esc(sp.name)}</b> · ${esc(H(f.a).name)} ${esc(f.sa)}–${esc(f.sb)} ${esc(H(f.b).name)}</a>`).join(""):`<small style="color:var(--dim)">Nothing is live right now. Check the schedule for what is next.</small>`}</div>
-    </div>
   </section>
   <div class="page" style="padding-top:12px">
     <div class="kpis">
