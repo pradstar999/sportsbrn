@@ -322,6 +322,10 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 body{background:transparent!important}
 body:before{display:none!important}
 .hero:after{display:none!important}
+/* Video-only backdrop: remove opaque hero panel and decorative overlays. */
+.hero{background:transparent!important;isolation:auto!important}
+.hero:before,.hero:after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
+#bg-shade{background:rgba(0,0,0,.20)!important}
 </style>
 
 <style id="sports-corner-redesign">
