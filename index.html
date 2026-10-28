@@ -677,15 +677,18 @@ body::before, .hero::before, .hero::after {
   width: 100vw !important;
   height: 100vh !important;
   object-fit: cover !important;
-  z-index: -2 !important;
+  z-index: 0 !important;
   opacity: 1 !important;
   display: block !important;
+  visibility: visible !important;
+  pointer-events: none !important;
 }
 #bg-shade {
   position: fixed !important;
   inset: 0 !important;
-  z-index: -1 !important;
+  z-index: 0 !important;
   background: rgba(3, 7, 16, .22) !important;
+  pointer-events: none !important;
 }
 body > *:not(#bg-video):not(#bg-shade) {
   position: relative;
