@@ -661,8 +661,10 @@ html, body, #app, .hero, .page, main, section {
   background: transparent !important;
   background-color: transparent !important;
 }
-body {
+html, body {
   background-image: none !important;
+}
+body {
   isolation: isolate !important;
 }
 body::before, .hero::before, .hero::after {
@@ -678,7 +680,7 @@ body::before, .hero::before, .hero::after {
   width: 100vw !important;
   height: 100vh !important;
   object-fit: cover !important;
-  z-index: -1 !important;
+  z-index: 0 !important;
   opacity: 1 !important;
   display: block !important;
   visibility: visible !important;
@@ -687,13 +689,13 @@ body::before, .hero::before, .hero::after {
 #bg-shade {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 0 !important;
+  z-index: 1 !important;
   background: rgba(3, 7, 16, .22) !important;
   pointer-events: none !important;
 }
 body > *:not(#bg-video):not(#bg-shade) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .bar {
   background: rgba(5, 8, 18, .38) !important;
@@ -708,7 +710,26 @@ body > *:not(#bg-video):not(#bg-shade) {
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
 <div id="bg-shade" aria-hidden="true"></div>
-<script>document.addEventListener("DOMContentLoaded",()=>{const v=document.getElementById("bg-video");if(!v)return;v.muted=true;v.defaultMuted=true;v.playsInline=true;const start=()=>{const p=v.play();if(p&&p.catch)p.catch(()=>{});};if(v.readyState>=2)start();else{v.addEventListener("canplay",start,{once:true});v.load();}});</script>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const v=document.getElementById("bg-video");
+  if(!v)return;
+  v.muted=true;
+  v.defaultMuted=true;
+  v.playsInline=true;
+  v.setAttribute("muted","");
+  v.setAttribute("playsinline","");
+  const start=()=>{
+    const p=v.play();
+    if(p&&p.catch)p.catch(()=>{});
+  };
+  v.addEventListener("loadeddata",start,{once:true});
+  v.addEventListener("canplay",start,{once:true});
+  v.addEventListener("error",()=>{console.error("Background video failed to load:",v.currentSrc||v.querySelector("source")?.src,v.error?.code);});
+  if(v.readyState>=2)start();
+  else v.load();
+});
+</script>
 <a class="skip" href="#app">Skip to content</a>
 <header class="bar">
   <a class="logo" href="#/" aria-label="SSSIHL Brindavan Sports Corner home">SSSIHL <span>SPORTS</span></a>
