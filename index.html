@@ -768,12 +768,17 @@ document.addEventListener("error",e=>{
 const galCache={};
 const test=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u});
 function findPhotos(o){
-  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
-  return galCache[o.id]||(galCache[o.id]=(async()=>{
-    const found=[],max=D.galleryMax||60;let i=1;
+  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${getDivision()}/${f}`)));
+  const cacheKey=o.id+"-"+getDivision();
+  return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
+    const found=[],max=D.galleryMax||60,div=getDivision()||"UG";
+    // Prefer division-specific galleries; fall back to legacy shared galleries for older uploads.
+    let prefix=`gallery/${o.id}/${div}/`;
+    if(!await test(asset(prefix+"1.jpg")))prefix=`gallery/${o.id}/`;
+    let i=1;
     while(i<=max){const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
-      const res=await Promise.all(batch.map(n=>test(asset(`gallery/${o.id}/${n}.jpg`))));
-      for(let k=0;k<batch.length;k++){if(res[k])found.push(asset(`gallery/${o.id}/${batch[k]}.jpg`));else return found;}
+      const res=await Promise.all(batch.map(n=>test(asset(prefix+n+".jpg"))));
+      for(let k=0;k<batch.length;k++){if(res[k])found.push(asset(prefix+batch[k]+".jpg"));else return found;}
       i+=8;}
     return found;})());
 }
