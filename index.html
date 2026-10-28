@@ -318,6 +318,10 @@ footer{background:rgba(0,0,0,.16);padding:34px 20px;border-top-color:var(--line)
 .fx .side.win{background:transparent!important;color:inherit!important;border-radius:0!important;padding:4px 0!important;display:flex!important}
 .fx .side.win .t,.fx .side.win .s{color:var(--hot)!important}
 .fx .side .tag{flex:0 0 auto}
+/* Homepage cinematic video treatment: let the video remain visible behind content. */
+body{background:transparent!important}
+body:before{display:none!important}
+.hero:after{display:none!important}
 </style>
 
 <style id="sports-corner-redesign">
@@ -1141,10 +1145,6 @@ function home(div){
     <h1>BRINDAVAN<br><em>SPORTS</em></h1>
     <p class="sub">One place for fixtures, live scores, athlete results, schedules, squads and memories from the campus.</p>
     ${laneHTML(t)}
-    <div class="nextrow">
-      <div class="next"><h3>Next on the field</h3>${next?`<div class="t">${esc(next.title)}</div><small>${esc(fmtDay(next.dt))} · ${esc(fmtTime(next.dt,next.time))}${next.venue?" · "+esc(next.venue):""}</small><div class="cd" data-cd="${next.dt.getTime()}"></div>`:`<div class="t">No upcoming events</div><small>The next fixture will appear here.</small>`}</div>
-      <div class="livebox"><h3><i class="dot" style="display:inline-block;margin-right:7px"></i> Live now</h3>${live.length?live.map(({sp,f})=>`<a class="chip" href="#/house/${sp.id}" style="text-decoration:none"><b>${esc(sp.name)}</b> · ${esc(H(f.a).name)} ${esc(f.sa)}–${esc(f.sb)} ${esc(H(f.b).name)}</a>`).join(""):`<small style="color:var(--dim)">Nothing is live right now. Check the schedule for what is next.</small>`}</div>
-    </div>
   </section>
   <div class="page" style="padding-top:12px">
     <div class="kpis">
