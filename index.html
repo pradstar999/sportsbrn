@@ -656,6 +656,20 @@ body.motion-off *,body.motion-off *:before,body.motion-off *:after{animation:non
 </style>
 
 <style id="video-only-background-override">
+
+/* Translucent footer with high-contrast text over the background video. */
+footer, #foot {
+  background: rgba(5, 8, 18, 0.42) !important;
+  background-color: rgba(5, 8, 18, 0.42) !important;
+  color: #ffffff !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+footer *, #foot * {
+  color: #ffffff !important;
+}
+
 /* FINAL OVERRIDE: the video is the only page background. */
 html, body, #app, .hero, .page, main, section {
   background: transparent !important;
