@@ -775,20 +775,32 @@ document.addEventListener("error",e=>{
 /* ---------- gallery (numbered files 1.jpg, 2.jpg ...) ---------- */
 const galCache={};
 const test=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u});
+let galleryManifestPromise;
+function loadGalleryManifest(){
+  if(!galleryManifestPromise)galleryManifestPromise=fetch(asset("gallery-manifest.json"),{cache:"no-cache"})
+    .then(r=>r.ok?r.json():{}).catch(()=>({}));
+  return galleryManifestPromise;
+}
 function findPhotos(o){
   if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${getDivision()}/${f}`)));
   const cacheKey=o.id+"-"+getDivision();
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
-    const found=[],max=D.galleryMax||60,div=getDivision()||"UG";
-    // Prefer division-specific galleries; fall back to legacy shared galleries for older uploads.
+    const div=getDivision()||"UG";
+    const manifest=await loadGalleryManifest();
+    const files=manifest[o.id]||[];
+    if(files.length)return files.map(f=>asset(`gallery/${o.id}/${f}`));
+    const found=[],max=D.galleryMax||60;
     let prefix=`gallery/${o.id}/${div}/`;
     if(!await test(asset(prefix+"1.jpg")))prefix=`gallery/${o.id}/`;
     let i=1;
-    while(i<=max){const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
+    while(i<=max){
+      const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
       const res=await Promise.all(batch.map(n=>test(asset(prefix+n+".jpg"))));
       for(let k=0;k<batch.length;k++){if(res[k])found.push(asset(prefix+batch[k]+".jpg"));else return found;}
-      i+=8;}
-    return found;})());
+      i+=8;
+    }
+    return found;
+  })());
 }
 function galleryBlock(o){
   return `<h2 class="h2">Photos</h2><div class="empty photo-status" style="padding:38px 24px;margin-top:16px;background:linear-gradient(135deg,rgba(77,163,255,.10),rgba(199,146,255,.08));border-style:solid;border-color:var(--line2)"><div style="font-size:30px;margin-bottom:10px">▧ ✦</div><h3 style="font-size:32px;color:var(--hot);margin-bottom:10px">A Little Pause Behind the Lens</h3><p style="max-width:540px;margin:0 auto;color:#b6bfd9;line-height:1.8">Our photo archive is temporarily offline while the server gets back on its feet. The moments are worth the wait — we’ll be back with the memories soon.</p><div style="margin-top:18px;font-size:11px;letter-spacing:.18em;color:#9fa9c7;font-weight:700">PHOTO ARCHIVE · TEMPORARILY UNAVAILABLE</div></div>`;
