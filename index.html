@@ -654,6 +654,52 @@ body.motion-off *,body.motion-off *:before,body.motion-off *:after{animation:non
 .reflection-foot{margin:28px auto 0;text-align:center;max-width:720px;color:var(--dim);font-size:15px;line-height:1.8}
 @media(max-width:720px){.reflection-grid,.reflection-results{grid-template-columns:1fr}.reflection-card{min-height:0}.oath-panel{margin:26px 0 44px}.reflection-scoreline{margin-top:40px}}
 </style>
+
+<style id="video-only-background-override">
+/* FINAL OVERRIDE: the video is the only page background. */
+html, body, #app, .hero, .page, main, section {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+body {
+  background-image: none !important;
+}
+body::before, .hero::before, .hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+#bg-video {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -2 !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+#bg-shade {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  background: rgba(3, 7, 16, .22) !important;
+}
+body > *:not(#bg-video):not(#bg-shade) {
+  position: relative;
+  z-index: 1;
+}
+.bar {
+  background: rgba(5, 8, 18, .38) !important;
+  backdrop-filter: blur(5px);
+}
+.next, .livebox, .kpi, .quick, .sc, .ev, .fx, .scoreboard, .pc {
+  background-color: rgba(7, 12, 24, .30) !important;
+}
+</style>
+
 </head>
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background.mp4" type="video/mp4"></video>
