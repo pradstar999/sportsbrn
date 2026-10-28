@@ -663,6 +663,7 @@ html, body, #app, .hero, .page, main, section {
 }
 body {
   background-image: none !important;
+  isolation: isolate !important;
 }
 body::before, .hero::before, .hero::after {
   content: none !important;
@@ -677,7 +678,7 @@ body::before, .hero::before, .hero::after {
   width: 100vw !important;
   height: 100vh !important;
   object-fit: cover !important;
-  z-index: 0 !important;
+  z-index: -1 !important;
   opacity: 1 !important;
   display: block !important;
   visibility: visible !important;
