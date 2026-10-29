@@ -1125,25 +1125,27 @@ document.addEventListener("error",e=>{
 /* ---------- gallery (numbered files 1.jpg, 2.jpg ...) ---------- */
 const galCache={};
 const test=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u});
-let galleryManifestPromise;
-function loadGalleryManifest(){
-  if(!galleryManifestPromise)galleryManifestPromise=fetch(asset("gallery-manifest.json"),{cache:"no-cache"})
+const galleryManifestPromises={};
+function loadGalleryManifest(division){
+  const file=division==="UG"?"gallery-ug-manifest.json":"gallery-manifest.json";
+  if(!galleryManifestPromises[division])galleryManifestPromises[division]=fetch(asset(file),{cache:"no-cache"})
     .then(r=>r.ok?r.json():{}).catch(()=>({}));
-  return galleryManifestPromise;
+  return galleryManifestPromises[division];
 }
 function findPhotos(o){
-  // The uploaded gallery contains PG photos only.
-  if(getDivision()!=="PG")return Promise.resolve([]);
+  const division=getDivision()||"UG";
   if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
-  const cacheKey=o.id+"-PG";
+  const cacheKey=o.id+"-"+division;
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
-    const manifest=await loadGalleryManifest();
+    const manifest=await loadGalleryManifest(division);
+    if(division==="UG")return (manifest[o.id]||[]).map(path=>asset(`gallery/${path}`));
     return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/PG/${f}`));
   })());
 }
 function galleryBlock(o){
-  if(getDivision()!=="PG")return `<h2 class="h2">Photos</h2><div class="empty gallery-note">UG photo galleries will appear here once UG photos are uploaded.</div>`;
-  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}" aria-label="${esc(o.name)} photos"><div class="empty">Loading PG photos…</div></div>`;
+  const division=getDivision()||"UG";
+  const label=division==="UG"?"UG":"PG";
+  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}" aria-label="${esc(o.name)} ${label} photos"><div class="empty">Loading ${label} photos…</div></div>`;
 }
 async function initGalleries(){
   for(const el of document.querySelectorAll("[data-gal]")){
