@@ -881,16 +881,15 @@ function loadGalleryManifest(){
   return galleryManifestPromise;
 }
 function findPhotos(o){
-  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${getDivision()}/${f}`)));
-  const cacheKey=o.id+"-"+getDivision();
+  // The current gallery upload contains PG photos only. Never show these in UG.
+  if(getDivision()!=="PG")return Promise.resolve([]);
+  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
+  const cacheKey=o.id+"-PG";
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
-    const div=getDivision()||"UG";
     const manifest=await loadGalleryManifest();
     const files=manifest[o.id]||[];
     if(files.length)return files.map(f=>asset(`gallery/${o.id}/${f}`));
-    const found=[],max=D.galleryMax||60;
-    let prefix=`gallery/${o.id}/${div}/`;
-    if(!await test(asset(prefix+"1.jpg")))prefix=`gallery/${o.id}/`;
+    const found=[],max=D.galleryMax||60,prefix=`gallery/${o.id}/`;
     let i=1;
     while(i<=max){
       const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
@@ -902,13 +901,14 @@ function findPhotos(o){
   })());
 }
 function galleryBlock(o){
-  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}" aria-label="${esc(o.name)} photos"><div class="empty">Loading photos…</div></div>`;
+  if(getDivision()!=="PG")return `<h2 class="h2">Photos</h2><div class="empty gallery-note">UG photo galleries will appear here once UG photos are uploaded.</div>`;
+  return `<h2 class="h2">Photos</h2><div class="gal" data-gal="${esc(o.id)}" aria-label="${esc(o.name)} photos"><div class="empty">Loading PG photos…</div></div>`;
 }
 async function initGalleries(){
   for(const el of document.querySelectorAll("[data-gal]")){
     const o=sport(el.dataset.gal)||event(el.dataset.gal);if(!o)continue;const urls=await findPhotos(o);
     if(!urls.length)continue;curGal=urls;
-    el.innerHTML=urls.map((u,i)=>`<figure data-lb="${i}"><img src="${esc(u)}" alt="${esc(o.name)} photo ${i+1}" loading="lazy"></figure>`).join("");
+    el.innerHTML=urls.map((u,i)=>`<figure data-lb="${i}"><img src="${esc(u)}" alt="${esc(o.name)} photo ${i+1}" loading="lazy" decoding="async" fetchpriority="low"></figure>`).join("");
     const n=$("[data-galnote]");if(n)n.remove();
   }
 }
