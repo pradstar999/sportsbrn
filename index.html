@@ -734,6 +734,12 @@ body > *:not(#bg-video):not(#bg-shade) {
 .next, .livebox, .kpi, .quick, .sc, .ev, .fx, .scoreboard, .pc {
   background-color: rgba(7, 12, 24, .30) !important;
 }
+/* Event cards: all event details remain white against the blue background. */
+.ev, .ev h3, .ev .b, .ev .k, .ev .r, .ev .r b, .ev .none {
+  color: #fff !important;
+}
+.ev { border-color: rgba(255,255,255,.88) !important; }
+.ev .r { border-top-color: rgba(255,255,255,.8) !important; }
 </style>
 
 </head>
@@ -748,11 +754,9 @@ if(!v||!shade||!deck)return;
 let slides=[],active=0,timer=null,manifestPromise=null;
 function onScroll(){
  if(!document.body.classList.contains("bg-home"))return;
- const explore=[...document.querySelectorAll("#app h2")].find(el=>el.textContent.trim()==="Explore");
- const start=explore?explore.getBoundingClientRect().top+scrollY+explore.offsetHeight:420;
- const p=Math.min(1,Math.max(0,(scrollY-start)/560));
- v.style.setProperty("opacity",".86","important");
- shade.style.setProperty("background-color","rgba(0,35,145,"+(.48+.40*p)+")","important");
+ const p=Math.min(1,Math.max(0,scrollY/620));
+ v.style.setProperty("opacity","1","important");
+ shade.style.setProperty("background-color","rgba(0,35,145,"+(.02+.78*p)+")","important");
 }
 async function slideshow(){
  if(!manifestPromise)manifestPromise=fetch("assets/gallery-manifest.json").then(r=>r.ok?r.json():{}).catch(()=>({})).then(m=>{
@@ -766,7 +770,7 @@ async function slideshow(){
 window.updateSportsBackground=function(routeName){
  const home=!routeName,showPhotos=routeName==="individual"||routeName==="standings";
  document.body.classList.toggle("bg-home",home);document.body.classList.toggle("bg-slideshow-on",!home&&showPhotos);
- if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity",".86","important");shade.style.setProperty("background-color","rgba(0,35,145,.48)","important");onScroll()}
+ if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity","1","important");shade.style.setProperty("background-color","rgba(0,35,145,.02)","important");onScroll()}
  else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(0,30,120,.76)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
 };
 addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
