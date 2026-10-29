@@ -703,6 +703,8 @@ body.bg-slideshow-on #bg-slideshow{opacity:1}
 #bg-video{transition:opacity 1.2s ease,filter 2s ease}
 #bg-shade{transition:background-color 1.2s ease}
 #bg-shade{background-color:rgba(210,215,225,.12)!important}
+body:has(#app){} 
+body.bg-individual-glass #bg-shade{background-color:rgba(105,112,125,.48)!important}
 #bg-shade.glass-blue{background-color:rgba(205,215,232,.10)!important}
 body .bar{background:rgba(220,225,235,.10)!important;border-bottom-color:rgba(255,255,255,.18)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 @media(prefers-reduced-motion:reduce){#bg-video,#bg-shade,#bg-slideshow,#bg-slideshow .bg-slide{transition:none!important}}
@@ -773,9 +775,13 @@ async function slideshow(){
  timer=setInterval(()=>{if(!document.body.classList.contains("bg-slideshow-on"))return;slides[active]?.classList.remove("active");active=(active+1)%slides.length;slides[active]?.classList.add("active")},6500);
 }
 window.updateSportsBackground=function(routeName){
- const home=!routeName,showPhotos=routeName==="individual"||routeName==="standings";
+ const home=!routeName,individual=routeName==="individual",showPhotos=routeName==="standings";
  document.body.classList.toggle("bg-home",home);document.body.classList.toggle("bg-slideshow-on",!home&&showPhotos);
  if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity","1","important");shade.style.setProperty("background-color","rgba(205,215,232,.10)","important");onScroll()}
+ else if(individual){
+  /* Individual events: keep the video moving beneath a medium-heavy grey glass pane. */
+  if(timer)clearInterval(timer);deck.style.opacity="0";v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity","1","important");shade.style.setProperty("background-color","rgba(105,112,125,.48)","important");
+ }
  else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(205,215,232,.20)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
 };
 addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
