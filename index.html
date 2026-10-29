@@ -1109,8 +1109,13 @@ const posterImg=(o,cls="poster")=>{const fs=posterFiles(o);
   return posterOne(o,fs[0],cls,o.name+" poster")};
 document.addEventListener("load",e=>{const el=e.target;if(el instanceof HTMLImageElement&&el.dataset.ph==="poster"&&el.naturalWidth>el.naturalHeight)el.classList.add("land")},true);
 function playerImg(gid,name,cls,photo){
-  const primary=photo?asset(`players/${gid}/${photo}`):asset(`players/${gid}/${slug(name)}.jpg`);
-  return `<img class="${cls}" src="${esc(primary)}" data-fb="${esc(asset("players/all/"+slug(name)+".jpg"))}" data-ph="player" data-label="${esc(name)}" alt="${esc(name)}" loading="lazy">`;
+  const label=esc(name);
+  const initials=esc(name.split(/\\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()||"?");
+  // No player portraits are currently committed. Render the placeholder directly
+  // instead of requesting files that do not exist and logging 404s.
+  if(!photo)return `<div class="${cls} ph" role="img" aria-label="${label} portrait unavailable"><span class="ini">${initials}</span></div>`;
+  const primary=asset(`players/${gid}/${photo}`);
+  return `<img class="${cls}" src="${esc(primary)}" data-fb="${esc(asset("players/all/"+slug(name)+".jpg"))}" data-ph="player" data-label="${label}" alt="${label}" loading="lazy">`;
 }
 document.addEventListener("error",e=>{
   const el=e.target;if(!(el instanceof HTMLImageElement)||!el.dataset.ph)return;
