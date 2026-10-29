@@ -695,7 +695,8 @@ body::before, .hero::before, .hero::after {
   height: 100vh !important;
   object-fit: cover !important;
   z-index: 0 !important;
-  opacity: 1 !important;
+  opacity: .08 !important;
+  animation: sports-video-reveal 22s cubic-bezier(.22,.61,.36,1) forwards;
   display: block !important;
   visibility: visible !important;
   pointer-events: none !important;
@@ -704,7 +705,8 @@ body::before, .hero::before, .hero::after {
   position: fixed !important;
   inset: 0 !important;
   z-index: 1 !important;
-  background: rgba(3, 7, 16, .22) !important;
+  background: rgba(3, 7, 16, .62) !important;
+  animation: sports-shade-reveal 22s cubic-bezier(.22,.61,.36,1) forwards;
   pointer-events: none !important;
 }
 body > *:not(#bg-video):not(#bg-shade) {
