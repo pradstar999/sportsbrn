@@ -48,7 +48,9 @@ h1,h2,h3{font-family:var(--display);line-height:.95;font-weight:900}
 
 /* hero */
 .hero{padding:44px 20px 24px;max-width:1200px;margin:auto}
-.hero h1{font-size:clamp(60px,12vw,168px);text-wrap:balance}.hero h1 em{font-style:normal;color:var(--hot)}
+.hero h1{font-size:clamp(46px,8.5vw,112px);text-wrap:nowrap;white-space:nowrap;letter-spacing:-.025em;line-height:1.05}.hero h1 em{font-style:normal;color:var(--hot);margin-left:.14em}
+@media(max-width:800px){.hero h1{font-size:clamp(42px,9vw,76px);white-space:normal}}
+@media(max-width:480px){.hero h1{font-size:clamp(35px,9vw,52px);white-space:nowrap}}
 .hero .sub{max-width:54ch;color:var(--dim);margin:14px 0 26px;font-size:18px}
 .lanes{border-top:2px solid #fff;border-bottom:2px solid #fff}
 .lane{display:grid;grid-template-columns:130px 1fr 70px;align-items:center;height:76px}
@@ -700,6 +702,9 @@ body::before, .hero::before, .hero::after {
 body.bg-slideshow-on #bg-slideshow{opacity:1}
 #bg-video{transition:opacity 1.2s ease,filter 2s ease}
 #bg-shade{transition:background-color 1.2s ease}
+#bg-shade{background-color:rgba(210,215,225,.12)!important}
+#bg-shade.glass-blue{background-color:rgba(205,215,232,.10)!important}
+body .bar{background:rgba(220,225,235,.10)!important;border-bottom-color:rgba(255,255,255,.18)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 @media(prefers-reduced-motion:reduce){#bg-video,#bg-shade,#bg-slideshow,#bg-slideshow .bg-slide{transition:none!important}}
 #bg-video {
   position: fixed !important;
@@ -719,7 +724,7 @@ body.bg-slideshow-on #bg-slideshow{opacity:1}
   position: fixed !important;
   inset: 0 !important;
   z-index: 1 !important;
-  background: rgba(0, 35, 145, .54);
+  background: rgba(205, 215, 232, .10);
   animation: none !important;
   pointer-events: none !important;
 }
@@ -756,7 +761,7 @@ function onScroll(){
  if(!document.body.classList.contains("bg-home"))return;
  const p=Math.min(1,Math.max(0,scrollY/620));
  v.style.setProperty("opacity","1","important");
- shade.style.setProperty("background-color","rgba(0,35,145,"+(.02+.78*p)+")","important");
+ shade.style.setProperty("background-color","rgba(205,215,232,"+(.10+.18*p)+")","important");
 }
 async function slideshow(){
  if(!manifestPromise)manifestPromise=fetch("assets/gallery-manifest.json").then(r=>r.ok?r.json():{}).catch(()=>({})).then(m=>{
@@ -770,8 +775,8 @@ async function slideshow(){
 window.updateSportsBackground=function(routeName){
  const home=!routeName,showPhotos=routeName==="individual"||routeName==="standings";
  document.body.classList.toggle("bg-home",home);document.body.classList.toggle("bg-slideshow-on",!home&&showPhotos);
- if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity","1","important");shade.style.setProperty("background-color","rgba(0,35,145,.02)","important");onScroll()}
- else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(0,30,120,.76)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
+ if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity","1","important");shade.style.setProperty("background-color","rgba(205,215,232,.10)","important");onScroll()}
+ else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(205,215,232,.20)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
 };
 addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
 document.addEventListener("DOMContentLoaded",()=>window.updateSportsBackground(location.hash.replace(/^#\/?/,"").split("/").filter(Boolean)[0]||""));
@@ -1280,9 +1285,9 @@ function home(div){
   const miniUpcoming=upcoming.map(i=>`<a class="mini-result" href="${i.link}"><span><b>${esc(i.title)}</b><small style="display:block;color:var(--dim)">${esc(fmtDay(i.dt))} · ${esc(fmtTime(i.dt,i.time))}</small></span><span class="mrscore">→</span></a>`).join("");
   return `<section class="hero">
     <div class="eyebrow">SSSIHL · BRINDAVAN CAMPUS · ${esc(D.meet)} · ${esc(divName(div))} (${div})</div>
-    <h1>BRINDAVAN<br><em>SPORTS</em></h1>
+    <h1>BRINDAVAN <em>SPORTS</em></h1>
     <p class="sub">One place for fixtures, live scores, athlete results, schedules, squads and memories from the campus.</p>
-    ${laneHTML(t)}
+    
   </section>
   <div class="page" style="padding-top:12px">
     <div class="kpis">
@@ -1304,7 +1309,6 @@ function home(div){
     </div>
     <div class="homegrid">
       <section><h2 class="h2">Individual events</h2><p class="lede">${D.individualEvents.length} events across track, jumps, throws, relay, racket and table sports.</p><div class="evgrid">${D.individualEvents.slice(0,6).map(e=>evCard(e,div)).join("")}</div><a class="btn solid" href="#/individual" style="margin-top:18px">See all individual events</a></section>
-      <aside class="dashpanel" style="margin-top:64px"><h3>Coming up</h3><div class="mini-results">${miniUpcoming||'<div class="empty">Schedule coming soon.</div>'}</div></aside>
     </div>
   </div>`;
 }
