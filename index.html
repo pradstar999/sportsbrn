@@ -815,6 +815,55 @@ body{color:#fff;font-weight:600}
 .bar nav a{transition:background .18s ease,color .18s ease,border-color .18s ease}
 .bar nav a:hover:not(.on){background:rgba(255,255,255,.13)!important;color:#fff!important}
 </style>
+
+<style id="standings-points-visibility">
+/* High-contrast leaderboard: readable over moving photography on desktop and mobile. */
+.standings-page .stand-table-wrap{
+  background:rgba(7,13,28,.82)!important;
+  border:1px solid rgba(255,255,255,.42)!important;
+  box-shadow:0 12px 38px rgba(0,0,0,.25);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+.standings-page .stand-table{min-width:760px!important}
+.standings-page .stand-table th{
+  color:#fff!important;font-size:15px!important;font-weight:900!important;
+  letter-spacing:.06em;padding:20px 22px!important;
+  background:rgba(255,255,255,.09)!important
+}
+.standings-page .stand-table td{
+  color:#fff!important;font-size:19px!important;font-weight:800!important;
+  padding:21px 22px!important;border-bottom:1px solid rgba(255,255,255,.17)!important
+}
+.standings-page .stand-table .stand-name{
+  color:#fff!important;font-size:20px!important;font-weight:900!important
+}
+.standings-page .stand-position{
+  width:46px!important;height:42px!important;font-size:16px!important;
+  background:rgba(255,255,255,.16)!important;color:#fff!important;
+  border:1px solid rgba(255,255,255,.25)
+}
+.standings-page .stand-position.gold{background:#ffd21f!important;color:#101828!important}
+.standings-page .stand-position.silver{background:#dce6f5!important;color:#101828!important}
+.standings-page .stand-position.bronze{background:#f0a87e!important;color:#101828!important}
+.standings-page .stand-total{
+  min-width:58px!important;padding:10px 15px!important;border-radius:8px!important;
+  font-size:23px!important;line-height:1.15!important;font-weight:900!important;
+  color:#101828!important;background:#d7ff35!important;
+  border:2px solid rgba(255,255,255,.9)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.35)
+}
+.standings-page .stand-table tbody tr:first-child{background:rgba(255,255,255,.09)!important}
+.standings-page .stand-table tbody tr:hover{background:rgba(255,255,255,.14)!important}
+.standings-page .stand-table-head .h2{color:#fff!important;font-size:clamp(38px,5vw,60px)!important;font-weight:900!important}
+.standings-page .stand-footnote{font-size:15px!important;color:#fff!important;font-weight:700!important}
+@media(max-width:650px){
+ .standings-page .stand-table{min-width:700px!important}
+ .standings-page .stand-table th{font-size:13px!important;padding:16px 14px!important}
+ .standings-page .stand-table td{font-size:17px!important;padding:17px 14px!important}
+ .standings-page .stand-table .stand-name{font-size:18px!important}
+ .standings-page .stand-total{font-size:20px!important;min-width:54px!important;padding:9px 12px!important}
+}
+</style>
 </head>
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
