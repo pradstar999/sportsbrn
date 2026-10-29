@@ -864,6 +864,57 @@ body{color:#fff;font-weight:600}
  .standings-page .stand-total{font-size:20px!important;min-width:54px!important;padding:9px 12px!important}
 }
 </style>
+
+<style id="dark-glass-readable-panels">
+/* Neutralise the bright green decoration on Oath & Reflections while preserving the results table. */
+.oath-page>h1 em{color:#fff!important}
+.oath-panel{
+ background:rgba(5,8,18,.78)!important;
+ border-color:rgba(255,255,255,.28)!important;
+ box-shadow:0 12px 34px rgba(0,0,0,.22);
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+.oath-panel:after{display:none!important}
+.oath-mark,.oath-kicker,.reflection-label{color:#fff!important}
+.reflection-card{
+ background:rgba(5,8,18,.80)!important;
+ border:1px solid rgba(255,255,255,.26)!important;
+ border-top:1px solid rgba(255,255,255,.34)!important;
+ box-shadow:0 12px 32px rgba(0,0,0,.22);
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+.reflection-card:hover{border-color:rgba(255,255,255,.55)!important}
+.reflection-symbol{background:rgba(255,255,255,.16)!important;color:#fff!important;border:1px solid rgba(255,255,255,.3)}
+.reflection-takeaway span{color:#fff!important}
+.reflection-scoreline{
+ background:rgba(5,8,18,.82)!important;border-color:rgba(255,255,255,.26)!important;
+ box-shadow:0 12px 32px rgba(0,0,0,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+.reflection-result span,.reflection-result b,.reflection-foot{color:#fff!important}
+.reflection-result b{font-weight:800!important}
+.reflection-result [style*="color"]{color:#fff!important}
+
+/* Use the same dark glass behind readable schedule rows and controls. */
+#schlist{
+ background:rgba(5,8,18,.80)!important;border:1px solid rgba(255,255,255,.24)!important;
+ border-radius:14px;padding:10px 20px!important;
+ box-shadow:0 12px 32px rgba(0,0,0,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+#schlist .day{color:#fff!important;font-size:clamp(28px,3.2vw,38px)!important;font-weight:900!important}
+#schlist .row{background:rgba(255,255,255,.035)!important;border-bottom:1px solid rgba(255,255,255,.16)!important;padding:17px 12px!important}
+#schlist .row .tm,#schlist .row .tt,#schlist .row small{color:#fff!important;font-weight:700!important}
+#schlist .row .tt{font-size:18px!important}
+#schlist .row small{font-size:14px!important;opacity:.92}
+#schlist .row .tm{font-size:24px!important}
+#schlist .row.past{opacity:.88!important}
+#schlist .row .btn{font-weight:800!important}
+@media(max-width:600px){
+ #schlist{padding:8px!important}
+ #schlist .row{padding:14px 6px!important;gap:10px}
+ #schlist .row .tt{font-size:16px!important}
+ #schlist .row small{font-size:13px!important}
+}
+</style>
 </head>
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
