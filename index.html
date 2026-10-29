@@ -670,6 +670,20 @@ footer *, #foot * {
   color: #ffffff !important;
 }
 
+/* Cinematic fade: keep the footage moving and visible beneath a dark reading layer. */
+@keyframes sports-video-reveal {
+  0%, 10% { opacity: .92; }
+  100% { opacity: .30; }
+}
+@keyframes sports-shade-reveal {
+  0%, 10% { background-color: rgba(3, 7, 16, .16); }
+  100% { background-color: rgba(3, 7, 16, .52); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #bg-video { opacity: .30 !important; animation: none !important; }
+  #bg-shade { background-color: rgba(3, 7, 16, .52) !important; animation: none !important; }
+}
+
 /* FINAL OVERRIDE: the video is the only page background. */
 html, body, #app, .hero, .page, main, section {
   background: transparent !important;
