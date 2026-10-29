@@ -1138,7 +1138,7 @@ function findPhotos(o){
   const cacheKey=o.id+"-PG";
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
     const manifest=await loadGalleryManifest();
-    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/${f}`));
+    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/PG/${f}`));
   })());
 }
 function galleryBlock(o){
