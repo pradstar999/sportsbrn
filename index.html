@@ -702,6 +702,13 @@ body::before, .hero::before, .hero::after {
   background-image: none !important;
   box-shadow: none !important;
 }
+#bg-slideshow{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.6s ease;background:#071225}
+#bg-slideshow .bg-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.035);transition:opacity 2.4s ease,transform 8s ease;filter:saturate(.72) brightness(.48)}
+#bg-slideshow .bg-slide.active{opacity:.24;transform:scale(1)}
+body.bg-slideshow-on #bg-slideshow{opacity:1}
+#bg-video{transition:opacity 1.8s ease,filter 2s ease}
+#bg-shade{transition:background-color 1.8s ease}
+@media(prefers-reduced-motion:reduce){#bg-video,#bg-shade,#bg-slideshow,#bg-slideshow .bg-slide{transition:none!important}}
 #bg-video {
   position: fixed !important;
   inset: 0 !important;
@@ -740,6 +747,38 @@ body > *:not(#bg-video):not(#bg-shade) {
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
 <div id="bg-shade" aria-hidden="true"></div>
+<div id="bg-slideshow" aria-hidden="true"></div>
+<script>
+(function(){
+const v=document.getElementById("bg-video"),shade=document.getElementById("bg-shade"),deck=document.getElementById("bg-slideshow");
+if(!v||!shade||!deck)return;
+let slides=[],active=0,timer=null,manifestPromise=null;
+function onScroll(){
+ if(!document.body.classList.contains("bg-home"))return;
+ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+ const p=Math.min(1,Math.max(0,scrollY/Math.max(420,max*.58)));
+ v.style.setProperty("opacity",String(.78*(1-p)),"important");
+ shade.style.setProperty("background-color","rgba(3,7,16,"+(.30+.44*p)+")","important");
+}
+async function slideshow(){
+ if(!manifestPromise)manifestPromise=fetch("assets/gallery-manifest.json").then(r=>r.ok?r.json():{}).catch(()=>({})).then(m=>{
+  const a=[];Object.entries(m).forEach(([event,files])=>files.forEach(file=>a.push("assets/gallery/"+event+"/"+file)));return [...new Set(a)].slice(0,36);
+ });
+ const urls=await manifestPromise;if(!urls.length)return;
+ deck.innerHTML="";slides=urls.map((url,i)=>{const im=document.createElement("img");im.className="bg-slide";im.alt="";im.decoding="async";if(i>2)im.loading="lazy";im.src=url;deck.appendChild(im);return im});
+ active=0;slides[0]?.classList.add("active");if(timer)clearInterval(timer);
+ timer=setInterval(()=>{if(!document.body.classList.contains("bg-slideshow-on"))return;slides[active]?.classList.remove("active");active=(active+1)%slides.length;slides[active]?.classList.add("active")},6500);
+}
+window.updateSportsBackground=function(routeName){
+ const home=!routeName,showPhotos=routeName==="individual"||routeName==="standings";
+ document.body.classList.toggle("bg-home",home);document.body.classList.toggle("bg-slideshow-on",!home&&showPhotos);
+ if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity",".78","important");shade.style.setProperty("background-color","rgba(3,7,16,.30)","important");onScroll()}
+ else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(3,7,16,.70)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
+};
+addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
+document.addEventListener("DOMContentLoaded",()=>window.updateSportsBackground(location.hash.replace(/^#\/?/,"").split("/").filter(Boolean)[0]||""));
+})();
+</script>
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
   const v=document.getElementById("bg-video");
@@ -899,11 +938,11 @@ function loadGalleryManifest(){
 function findPhotos(o){
   // The uploaded gallery contains PG photos only.
   if(getDivision()!=="PG")return Promise.resolve([]);
-  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/PG/${f}`)));
+  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
   const cacheKey=o.id+"-PG";
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
     const manifest=await loadGalleryManifest();
-    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/PG/${f}`));
+    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/${f}`));
   })());
 }
 function galleryBlock(o){
@@ -1399,6 +1438,7 @@ function route(){
   else if(a==="admin"){html=adminPage();title=isAdmin()?"Admin":"Admin access"}
   else html=notFound();
   $("#app").innerHTML=html;document.title=title+(a?" · ":" · ")+"SSSIHL Brindavan";
+  if(window.updateSportsBackground)window.updateSportsBackground(a||"");
   document.querySelectorAll("#nav a").forEach(l=>l.classList.toggle("on",l.dataset.r===(a||"")));
   scrollTo(0,0);animateLanes();initGalleries();startCd();
 }
