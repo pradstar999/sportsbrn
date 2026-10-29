@@ -23,7 +23,6 @@ for event_dir in sorted(p for p in root.iterdir() if p.is_dir() and p.name != 'u
             image.thumbnail((2000, 2000), Image.Resampling.LANCZOS)
             image.save(target, 'WEBP', quality=82, method=6)
         names.append(target.name)
-        source.unlink()
         count += 1
     if names:
         manifest[event_dir.name] = names
