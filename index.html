@@ -885,11 +885,11 @@ function loadGalleryManifest(){
 function findPhotos(o){
   // The uploaded gallery contains PG photos only.
   if(getDivision()!=="PG")return Promise.resolve([]);
-  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
+  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/PG/${f}`)));
   const cacheKey=o.id+"-PG";
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
     const manifest=await loadGalleryManifest();
-    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/${f}`));
+    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/PG/${f}`));
   })());
 }
 function galleryBlock(o){
