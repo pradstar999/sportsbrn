@@ -881,23 +881,13 @@ function loadGalleryManifest(){
   return galleryManifestPromise;
 }
 function findPhotos(o){
-  // The current gallery upload contains PG photos only. Never show these in UG.
+  // The uploaded gallery contains PG photos only.
   if(getDivision()!=="PG")return Promise.resolve([]);
-  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/${f}`)));
+  if(o.gallery&&o.gallery.length)return Promise.resolve(o.gallery.map(f=>asset(`gallery/${o.id}/PG/${f}`)));
   const cacheKey=o.id+"-PG";
   return galCache[cacheKey]||(galCache[cacheKey]=(async()=>{
     const manifest=await loadGalleryManifest();
-    const files=manifest[o.id]||[];
-    if(files.length)return files.map(f=>asset(`gallery/${o.id}/${f}`));
-    const found=[],max=D.galleryMax||60,prefix=`gallery/${o.id}/`;
-    let i=1;
-    while(i<=max){
-      const batch=[...Array(8)].map((_,k)=>i+k).filter(n=>n<=max);
-      const res=await Promise.all(batch.map(n=>test(asset(prefix+n+".jpg"))));
-      for(let k=0;k<batch.length;k++){if(res[k])found.push(asset(prefix+batch[k]+".jpg"));else return found;}
-      i+=8;
-    }
-    return found;
+    return (manifest[o.id]||[]).map(f=>asset(`gallery/${o.id}/PG/${f}`));
   })());
 }
 function galleryBlock(o){
