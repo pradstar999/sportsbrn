@@ -779,6 +779,29 @@ body{color:#fff;font-weight:600}
 #app input::placeholder,#app textarea::placeholder{color:rgba(255,255,255,.78)}
 #app a:not(.btn):not(.quick):not(.sc):not(.ev){text-decoration-color:rgba(255,255,255,.55)}
 </style>
+
+<style id="standings-readability-upgrade">
+/* Make the leaderboard genuinely readable at normal desktop viewing distance. */
+.standings-page .stand-table{min-width:760px;width:100%}
+.standings-page .stand-table th{font-size:14px!important;padding:18px 20px!important;color:#fff!important;font-weight:800!important}
+.standings-page .stand-table td{font-size:17px!important;line-height:1.45;padding:19px 20px!important;color:#fff!important;font-weight:700!important}
+.standings-page .stand-position{width:42px;height:38px;font-size:15px!important;color:#fff!important}
+.standings-page .stand-total{min-width:48px;padding:7px 11px;font-size:18px!important;font-weight:900!important}
+.standings-page .stand-name{font-size:18px!important;font-weight:800!important;color:#fff!important}
+.standings-page .stand-table-head .h2{font-size:clamp(34px,4vw,52px)!important}
+.standings-page .stand-key span{font-size:14px!important;color:#fff!important;font-weight:700!important;padding:10px 12px}
+.standings-page .stand-pod h3{font-size:clamp(24px,3vw,36px)!important;color:#fff!important}
+.standings-page .stand-medals{font-size:15px!important;font-weight:700!important;color:#fff!important}
+.standings-page .stand-pod>small{font-size:14px!important;color:#fff!important;font-weight:700!important}
+.standings-page .stand-points{font-size:clamp(52px,6vw,76px)!important}
+.standings-page .stand-footnote{font-size:14px!important;color:#fff!important;font-weight:600!important}
+@media(max-width:650px){
+ .standings-page .stand-table th{font-size:12px!important;padding:14px 12px!important}
+ .standings-page .stand-table td{font-size:15px!important;padding:15px 12px!important}
+ .standings-page .stand-name{font-size:16px!important}
+ .standings-page .stand-total{font-size:16px!important}
+}
+</style>
 </head>
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
@@ -1390,7 +1413,7 @@ function sportPage(sp,div){
 function individualStandings(div){
   const pointsByPlace={1:5,2:3,3:1};
   const totals=new Map();
-  D.individualEvents.filter(ev=>ev.id!=="10000m").forEach(ev=>(ev.results||[]).filter(r=>r.div===div).forEach(r=>{
+  D.individualEvents.filter(ev=>ev.id!=="10000m"&&!/badminton|table\s*tennis|tennis/i.test(ev.name)).forEach(ev=>(ev.results||[]).filter(r=>r.div===div).forEach(r=>{
     const place=Number(r.place),pts=pointsByPlace[place],name=String(r.name||"").trim();
     if(!pts||!name)return;
     const key=name.toLocaleLowerCase().replace(/\\s+/g," ");
