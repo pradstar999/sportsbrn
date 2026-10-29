@@ -670,18 +670,10 @@ footer *, #foot * {
   color: #ffffff !important;
 }
 
-/* Cinematic fade: keep the footage moving and visible beneath a dark reading layer. */
-@keyframes sports-video-reveal {
-  0%, 10% { opacity: .92; }
-  100% { opacity: .30; }
-}
-@keyframes sports-shade-reveal {
-  0%, 10% { background-color: rgba(3, 7, 16, .16); }
-  100% { background-color: rgba(3, 7, 16, .52); }
-}
+/* Blue cinematic overlay: keep the video moving while blue tint provides text contrast. */
 @media (prefers-reduced-motion: reduce) {
-  #bg-video { opacity: .30 !important; animation: none !important; }
-  #bg-shade { background-color: rgba(3, 7, 16, .52) !important; animation: none !important; }
+  #bg-video { animation: none !important; }
+  #bg-shade { animation: none !important; }
 }
 
 /* FINAL OVERRIDE: the video is the only page background. */
@@ -702,12 +694,12 @@ body::before, .hero::before, .hero::after {
   background-image: none !important;
   box-shadow: none !important;
 }
-#bg-slideshow{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.6s ease;background:#071225}
-#bg-slideshow .bg-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.035);transition:opacity 2.4s ease,transform 8s ease;filter:saturate(.72) brightness(.48)}
-#bg-slideshow .bg-slide.active{opacity:.24;transform:scale(1)}
+#bg-slideshow{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.6s ease;background:#061b58}
+#bg-slideshow .bg-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.035);transition:opacity 2.4s ease,transform 8s ease;filter:saturate(.88) brightness(.72)}
+#bg-slideshow .bg-slide.active{opacity:.34;transform:scale(1)}
 body.bg-slideshow-on #bg-slideshow{opacity:1}
-#bg-video{transition:opacity 1.8s ease,filter 2s ease}
-#bg-shade{transition:background-color 1.8s ease}
+#bg-video{transition:opacity 1.2s ease,filter 2s ease}
+#bg-shade{transition:background-color 1.2s ease}
 @media(prefers-reduced-motion:reduce){#bg-video,#bg-shade,#bg-slideshow,#bg-slideshow .bg-slide{transition:none!important}}
 #bg-video {
   position: fixed !important;
@@ -716,8 +708,9 @@ body.bg-slideshow-on #bg-slideshow{opacity:1}
   height: 100vh !important;
   object-fit: cover !important;
   z-index: 0 !important;
-  opacity: .78;
-  animation: sports-video-reveal 22s cubic-bezier(.22,.61,.36,1) forwards;
+  opacity: .86;
+  animation: none !important;
+  filter: saturate(.92) contrast(1.04);
   display: block !important;
   visibility: visible !important;
   pointer-events: none !important;
@@ -726,8 +719,8 @@ body.bg-slideshow-on #bg-slideshow{opacity:1}
   position: fixed !important;
   inset: 0 !important;
   z-index: 1 !important;
-  background: rgba(3, 7, 16, .20);
-  animation: sports-shade-reveal 22s cubic-bezier(.22,.61,.36,1) forwards;
+  background: rgba(0, 35, 145, .54);
+  animation: none !important;
   pointer-events: none !important;
 }
 body > *:not(#bg-video):not(#bg-shade) {
@@ -758,8 +751,8 @@ function onScroll(){
  const explore=[...document.querySelectorAll("#app h2")].find(el=>el.textContent.trim()==="Explore");
  const start=explore?explore.getBoundingClientRect().top+scrollY+explore.offsetHeight:420;
  const p=Math.min(1,Math.max(0,(scrollY-start)/560));
- v.style.setProperty("opacity",String(.78*(1-p)),"important");
- shade.style.setProperty("background-color","rgba(3,7,16,"+(.30+.44*p)+")","important");
+ v.style.setProperty("opacity",".86","important");
+ shade.style.setProperty("background-color","rgba(0,35,145,"+(.48+.40*p)+")","important");
 }
 async function slideshow(){
  if(!manifestPromise)manifestPromise=fetch("assets/gallery-manifest.json").then(r=>r.ok?r.json():{}).catch(()=>({})).then(m=>{
@@ -773,8 +766,8 @@ async function slideshow(){
 window.updateSportsBackground=function(routeName){
  const home=!routeName,showPhotos=routeName==="individual"||routeName==="standings";
  document.body.classList.toggle("bg-home",home);document.body.classList.toggle("bg-slideshow-on",!home&&showPhotos);
- if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity",".78","important");shade.style.setProperty("background-color","rgba(3,7,16,.30)","important");onScroll()}
- else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(3,7,16,.70)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
+ if(home){v.style.display="block";v.play().catch(()=>{});v.style.setProperty("opacity",".86","important");shade.style.setProperty("background-color","rgba(0,35,145,.48)","important");onScroll()}
+ else{v.pause();v.style.setProperty("opacity","0","important");shade.style.setProperty("background-color","rgba(0,30,120,.76)","important");if(showPhotos)slideshow();else if(timer)clearInterval(timer)}
 };
 addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
 document.addEventListener("DOMContentLoaded",()=>window.updateSportsBackground(location.hash.replace(/^#\/?/,"").split("/").filter(Boolean)[0]||""));
