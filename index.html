@@ -752,6 +752,33 @@ body > *:not(#bg-video):not(#bg-shade) {
 .ev .r { border-top-color: rgba(255,255,255,.8) !important; }
 </style>
 
+
+<style id="readability-white-bold">
+/* Site-wide readability pass: make informational text white and confidently weighted. */
+:root{--dim:#fff}
+body{color:#fff;font-weight:600}
+#app p,#app li,#app label,#app small,#app td,#app th,#app dt,#app dd,
+#app .lede,#app .meta,#app .muted,#app .empty,#app .sub,#app .k,
+#app .r,#app .soon,#app .eyebrow,#app .crumb,#app .stand-footnote,
+#app .mini-result,#app .mini-result small,#app .gallery-note,
+#app .field label,#app .formhint,#app .hint,#app .note,
+#app .ev .b,#app .ev .r,#app .sc-b,
+#nav a,.bar .logo,.bar .sbtn,#divswitch .divbtn,#foot {
+  color:#fff!important;
+  font-weight:600!important;
+}
+#app h1,#app h2,#app h3,#app h4,#app strong,#app b,
+#app .kpi span,#app .quick strong,#app .quick span,
+#app .stand-kicker,#app .stand-name,#app .stand-position,
+#app .stand-medals span,#app .stand-points,
+#app .table-wrap th,#app .score,#app .mrscore {
+  color:#fff!important;
+  font-weight:700!important;
+}
+#app input,#app textarea,#app select{color:#fff}
+#app input::placeholder,#app textarea::placeholder{color:rgba(255,255,255,.78)}
+#app a:not(.btn):not(.quick):not(.sc):not(.ev){text-decoration-color:rgba(255,255,255,.55)}
+</style>
 </head>
 <body>
 <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="assets/background/sportsbrn-background-optimized.mp4" type="video/mp4"></video>
